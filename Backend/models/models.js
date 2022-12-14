@@ -3,16 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //collection for intakeData for clients includes the embedded address object schema
+// acts as the schema for our cilent
 let primaryDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
+
+    // dont really need a org id due to not doing multiple instances however good to know 
     org_id:{
         type: Number,
         default:  parseInt(process.env.ORG_ID)
-    },
-
-    org_name:{
-        type: String,
-        default:process.env.ORG_NAME
     },
 
     firstName: {
@@ -38,8 +36,6 @@ let primaryDataSchema = new Schema({
             required: true,
             unique: true,
 
-       
-            
 
         },
         seondaryPhone: 
@@ -78,17 +74,24 @@ let primaryDataSchema = new Schema({
 
 
 //collection for eventData includes embedded address object schema
-let eventDataSchema = new Schema({
+let reviewDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
     
-    eventName: {
+    BookName: {
         type: String,
         required: true
     },
-    org_id:{
-        type: Number,
-        default:  parseInt(process.env.ORG_ID)
-    },
+    isbns: 
+        {
+          isbn10: {type:Number
+        }
+          ,
+          isbn13: {
+            type: Number
+        }
+        }
+      ,
+    
     services: [{
         type: String,
         required: true
@@ -123,18 +126,14 @@ let eventDataSchema = new Schema({
         default: null
     }]
 }, {
-    collection: 'eventData'
+    collection: 'reviewData'
 });
-
-
-
-
 
 
 
 // create models from mongoose schemas
 const primarydata = mongoose.model('primaryData', primaryDataSchema);
-const eventdata = mongoose.model('eventData', eventDataSchema);
+const eventdata = mongoose.model('reviewData', reviewDataSchema);
 // const clientaddress = mongoose.model('cilentaddress',cilentaddressSchema)
 // package the models in an object to export 
 module.exports = { primarydata, eventdata }
