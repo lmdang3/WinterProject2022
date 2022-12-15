@@ -159,4 +159,4 @@ const bookdata = mongoose.model('bookData', BooksDataSchema);
 const userRating = mongoose.model('userRating',  userRatingSchema);
 
 // package the models in an object to export 
-module.exports = { userdata, bookdata,userRating }
+module.exports = { userdata, bookdata, userRating }
