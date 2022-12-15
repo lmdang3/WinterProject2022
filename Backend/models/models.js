@@ -81,30 +81,34 @@ let BooksDataSchema = new Schema({
         type: String,
         required: true
     },
+    author: {
+    type: String,
+    required: true
 
+    },
+    publisher: {
+        type: String,
+        required: true
+    
+        },
+    
     description: {type: String,
         required: true
     },
-    
+
     isbns: 
         {
-          isbn10: {type:String
+          isbn10: {
+            type:String,
+            required: true 
         }
           ,
           isbn13: {
-            type: String
+            type: String,
+            required: true
         }
         }
       ,
-    
-
-    date: {
-        type: Date,
-        required: true
-    },
-    description: {
-        type: String,
-    },
     // acts as the list of user ids
     userReviews: [{
         type: String,
@@ -114,11 +118,39 @@ let BooksDataSchema = new Schema({
     collection: 'bookData'
 });
 
+let userRatingSchema = new Schema({
+    _id: { type: String, default: uuid.v1 },
 
+    user_id: { 
+        type: String,
+         required:true  
+        },
+
+    book_id: {
+
+        type: String,
+        required: true
+    },
+
+    rating: {
+        type: Number,
+        required: true
+    },
+
+    description: {
+
+        type: String,
+    
+    }
+
+}, {
+    collection: 'userRating'
+});
 
 // create models from mongoose schemas
 const userdata = mongoose.model('userData', userDataSchema);
 const bookdata = mongoose.model('bookData', BooksDataSchema);
-// const clientaddress = mongoose.model('useraddress',useraddressSchema)
+const userRating = mongoose.model('userRating',  userRatingSchema);
+
 // package the models in an object to export 
-module.exports = { userdata, eventdata }
+module.exports = { userdata, bookdata,userRating }
