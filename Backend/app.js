@@ -33,9 +33,9 @@ console.log(PORT)
 console.log(ORG_NAME)
 
 // setting up the enviroment variable to be exported
-var ORG_ID = parseInt(process.env.ORG_ID);
-console.log(ORG_ID)
-module.exports = ORG_ID
+var Organization_Name = process.env.Organization_Name;
+console.log(Organization_Name)
+
 
 
 
@@ -44,14 +44,14 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 //import routes
-const primaryDataRoute  = require('./routes/primaryData');
-const eventsDataRoute  = require('./routes/eventsData');
-const organizationDataRoute  = require('./routes/organizationData');
+// const primaryDataRoute  = require('./routes/primaryData');
+// const eventsDataRoute  = require('./routes/eventsData');
+// const organizationDataRoute  = require('./routes/organizationData');
 
-//setup middle ware for routes
-app.use('/primaryData', primaryDataRoute);
-app.use('/eventData', eventsDataRoute);
-app.use('/organizationData', organizationDataRoute);
+// //setup middle ware for routes
+// app.use('/primaryData', primaryDataRoute);
+// app.use('/eventData', eventsDataRoute);
+// app.use('/organizationData', organizationDataRoute);
 
 app.listen(PORT, () => {
   console.log("Server started listening on port : ", PORT);
