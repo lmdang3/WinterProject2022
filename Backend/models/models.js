@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //collection for intakeData for clients includes the embedded address object schema
-// acts as the schema for our cilent
-let CilentDataSchema = new Schema({
+// acts as the schema for our user
+let userDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
 
     // dont really need a org id due to not doing multiple instances however good to know 
@@ -67,7 +67,7 @@ let CilentDataSchema = new Schema({
         }
 }
 }, {
-    collection: 'cilentData',
+    collection: 'userData',
     timestamps: true
 });
 
@@ -77,25 +77,27 @@ let CilentDataSchema = new Schema({
 let BooksDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
     
-    bookName: {
+    title : {
         type: String,
         required: true
     },
+
+    description: {type: String,
+        required: true
+    },
+    
     isbns: 
         {
-          isbn10: {type:Number
+          isbn10: {type:String
         }
           ,
           isbn13: {
-            type: Number
+            type: String
         }
         }
       ,
     
-    services: [{
-        type: String,
-        required: true
-    }],
+
     date: {
         type: Date,
         required: true
@@ -103,8 +105,8 @@ let BooksDataSchema = new Schema({
     description: {
         type: String,
     },
-    // acts as the list of cilent ids
-    cilentReviews: [{
+    // acts as the list of user ids
+    userReviews: [{
         type: String,
         default: null
     }]
@@ -115,8 +117,8 @@ let BooksDataSchema = new Schema({
 
 
 // create models from mongoose schemas
-const cilentdata = mongoose.model('cilentData', CilentDataSchema);
+const userdata = mongoose.model('userData', userDataSchema);
 const bookdata = mongoose.model('bookData', BooksDataSchema);
-// const clientaddress = mongoose.model('cilentaddress',cilentaddressSchema)
+// const clientaddress = mongoose.model('useraddress',useraddressSchema)
 // package the models in an object to export 
-module.exports = { primarydata, eventdata }
+module.exports = { userdata, eventdata }
