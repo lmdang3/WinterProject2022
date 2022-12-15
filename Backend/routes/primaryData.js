@@ -52,7 +52,7 @@ router.get("/search/", (req, res, next) => {
             "phoneNumbers.primaryPhone": { $regex: `^${req.query["phoneNumbers.primaryPhone"]}`, $options: "i" }
         }
     };
-    primarydata.find( 
+    userdata.find( 
         dbQuery, 
         (error, data) => { 
             if (error) {
@@ -97,7 +97,7 @@ router.get("/events/:id", (req, res, next) => {
 
 //POST
 router.post("/", (req, res, next) => { 
-    primarydata.create( 
+    userdata.create( 
         req.body,
         (error, data) => { 
             if (error) {
@@ -108,9 +108,9 @@ router.post("/", (req, res, next) => {
             }
         }
     );
-    primarydata.createdAt;
-    primarydata.updatedAt;
-    primarydata.createdAt instanceof Date;
+    userdata.createdAt;
+    userdata.updatedAt;
+    userdata.createdAt instanceof Date;
 });
 
 //PUT update (make sure req body doesn't have the id)
