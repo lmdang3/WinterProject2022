@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router(); 
 
 //importing data model schemas
-let { primarydata } = require("../models/models"); 
+let { userdata } = require("../models/models"); 
 let { eventdata } = require("../models/models"); 
 
 
@@ -16,9 +16,7 @@ const subtractMonths = (date, months) => {
 
 //GET all entries
 router.get("/", (req, res, next) => { 
-    primarydata.find(  {
-        org_id:process.env.ORG_ID
-        },
+    userdata.find( 
         (error, data) => {
             if (error) {
                 return next(error);
@@ -30,19 +28,9 @@ router.get("/", (req, res, next) => {
 });
 
 //GET single entry by ID
-router.get("/id/:id", (req, res, next) => {
-    primarydata.find(         {
-        $and: [
-          {
-            _id: req.params.id
-          },
-          {
-            org_id:process.env.ORG_ID
-            }
-          ]}
-    
-
-        , 
+router.get("/:id", (req, res, next) => {
+    userdata.find( 
+        {_id: req.params.id }, 
         (error, data) => {
             if (error) {
                 return next(error);
