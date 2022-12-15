@@ -28,7 +28,7 @@ router.get("/", (req, res, next) => {
 });
 
 //GET single entry by ID
-router.get("/:id", (req, res, next) => {
+router.get("user/:id", (req, res, next) => {
     userdata.find( 
         {_id: req.params.id }, 
         (error, data) => {
