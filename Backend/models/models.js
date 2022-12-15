@@ -8,8 +8,9 @@ let userDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
 
     // dont really need a org id due to not doing multiple instances however good to know 
+    // we dont have to insert into the body but i want to show that it is possible
     organization_Name:{
-        type: Number,
+        type: String,
         default:  parseInt(process.env.Organization_Name)
     },
 
@@ -113,7 +114,13 @@ let BooksDataSchema = new Schema({
     userReviews: [{
         type: String,
         default: null
-    }]
+    }],
+
+    bookCover: {
+        type: Buffer, // casted to MongoDB's BSON type: binData
+       default: null 
+    }
+
 }, {
     collection: 'bookData'
 });
@@ -154,9 +161,9 @@ let userRatingSchema = new Schema({
 });
 
 // create models from mongoose schemas
-const userdata = mongoose.model('userData', userDataSchema);
-const bookdata = mongoose.model('bookData', BooksDataSchema);
+const userData = mongoose.model('userData', userDataSchema);
+const bookData = mongoose.model('bookData', BooksDataSchema);
 const userRating = mongoose.model('userRating',  userRatingSchema);
 
 // package the models in an object to export 
-module.exports = { userdata, bookdata, userRating }
+module.exports = { userData, bookData, userRating }

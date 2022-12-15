@@ -9,6 +9,7 @@ require("dotenv").config();
 //importing data model schemas
 let { eventdata } = require("../models/models"); 
 
+// function used to handle dates
 //  https://dirask.com/posts/JavaScript-subtract-months-from-date-pVmgGD#:~:text=In%20this%20article%2C%20we%20would%20like%20to%20show,2%29%3B%20%2F%2F%20subtracted%202%20months%20from%20existing%20date
 const subtractMonths = (date, months) => {
     const result = new Date(date);
@@ -57,28 +58,6 @@ router.get("/id/:id", (req, res, next) => {
     })
 });
 
-//GET entries based on search query
-//Ex: '...?eventName=Food&searchBy=name' 
-router.get("/search/", (req, res, next) => { 
-    let dbQuery = "";
-    if (req.query["searchBy"] === 'name') {
-        dbQuery = { eventName: { $regex: `^${req.query["eventName"]}`, $options: "i" } }
-    } else if (req.query["searchBy"] === 'date') {
-        dbQuery = {
-            date:  req.query["eventDate"]
-        }
-    };
-    eventdata.find( 
-        dbQuery, 
-        (error, data) => { 
-            if (error) {
-                return next(error);
-            } else {
-                res.json(data);
-            }
-        }
-    );
-});
 
 //GET events for which a client is signed up
 router.get("/client/:id", (req, res, next) => { 
