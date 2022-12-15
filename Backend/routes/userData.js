@@ -43,7 +43,7 @@ router.get("/:id", (req, res, next) => {
 
 
 
-//GET clients off of their number
+//GET users based off of their phone numbers
 // http://localhost:3000/primaryData/getnum/8329412894
 router.get("/getnum/:nums", (req, res, next) => { 
     let dbQuery = "";
