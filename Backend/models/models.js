@@ -132,6 +132,12 @@ let userRatingSchema = new Schema({
         required: true
     },
 
+    date: {
+
+        type: String,
+        required: true
+    },
+
     rating: {
         type: Number,
         required: true
