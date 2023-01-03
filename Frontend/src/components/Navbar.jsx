@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom'; // lets us link pages
 
 function Button({text, bg, padding}) {
   return (
