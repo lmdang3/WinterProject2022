@@ -21,17 +21,17 @@ function TopBooks() {
 
   // used to grab a variable from the env variable
   // import.meta.env.VITE_ROOT_API
-  const baseURL = "http://localhost:3000/userRatingData/"
-  const [post, setPost] = React.useState(null);
+  // const baseURL = "http://localhost:3000/userRatingData/"
+  // const [post, setPost] = React.useState(null);
 
-  React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
-      setPost(response.data);
+  // React.useEffect(() => {
+  //   axios.get(baseURL).then((response) => {
+  //     setPost(response.data);
   
-    });
-  }, []);
+  //   });
+  // }, []);
 
-  if (!post) return null;
+  // if (!post) return null;
 
   return (
 
@@ -42,7 +42,7 @@ function TopBooks() {
       <p class="text-center mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">See the rating of the latest and hottest books according to the New York Times</p>
 
 
-      <p class="text-center mb-6 text-gray-500 md:text-lg dark:text-black">{post}</p>
+      <p class="text-center mb-6 text-gray-500 md:text-lg dark:text-black"></p>
 
 
 
