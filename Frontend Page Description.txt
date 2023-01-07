@@ -1,0 +1,3 @@
+Pages
+Home - the landing page
+TopBooks - page with the top books from api call to ny times
