@@ -10,7 +10,12 @@ function App() {
     <Router>
     <div className="pt-20">
       <Navbar />
+
+
+      
       <Routes>
+        {/* sets up the routes */}
+
         <Route path="/" element={<Home />}/>
         <Route path="/about" element={<About />} />
         <Route path = "/topbooks" element={<TopBooks />} />

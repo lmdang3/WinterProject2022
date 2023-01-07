@@ -7,7 +7,7 @@ require("dotenv").config();
 
 
 //importing data model schemas
-let { eventdata } = require("../models/models"); 
+let { bookData } = require("../models/models"); 
 
 // function used to handle dates
 //  https://dirask.com/posts/JavaScript-subtract-months-from-date-pVmgGD#:~:text=In%20this%20article%2C%20we%20would%20like%20to%20show,2%29%3B%20%2F%2F%20subtracted%202%20months%20from%20existing%20date
@@ -21,7 +21,7 @@ const subtractMonths = (date, months) => {
 
 //GET all entries
 router.get("/", (req, res, next) => { 
-    eventdata.find(    {
+    bookData.find(    {
         org_id:process.env.ORG_ID
         },
         (error, data) => {
@@ -36,7 +36,7 @@ router.get("/", (req, res, next) => {
 
 //GET single entry by ID
 router.get("/id/:id", (req, res, next) => { 
-    eventdata.find(
+    bookData.find(
         {
         $and: [
           {
@@ -61,7 +61,7 @@ router.get("/id/:id", (req, res, next) => {
 
 //GET events for which a client is signed up
 router.get("/client/:id", (req, res, next) => { 
-    eventdata.find( 
+    bookData.find( 
         { attendees: req.params.id }, 
         (error, data) => { 
             if (error) {
@@ -75,7 +75,7 @@ router.get("/client/:id", (req, res, next) => {
 
 //POST new event
 router.post("/", (req, res, next) => { 
-    eventdata.create( 
+    bookData.create( 
         req.body, 
         (error, data) => { 
             if (error) {
@@ -89,7 +89,7 @@ router.post("/", (req, res, next) => {
 
 //PUT update event information by id 
 router.put("/:id", (req, res, next) => {
-    eventdata.findOneAndUpdate(
+    bookData.findOneAndUpdate(
         { _id: req.params.id },
         req.body,
         (error, data) => {
@@ -105,7 +105,7 @@ router.put("/:id", (req, res, next) => {
 //Lauren 
 //DELETE endpoint for an event
 router.delete("/:id", (req,res,next)=>{
-    eventdata.deleteOne(
+    bookData.deleteOne(
         {_id : req.params.id}, 
         (error,data)=>{
             if (error) {
@@ -124,14 +124,14 @@ router.delete("/:id", (req,res,next)=>{
 
 router.put("/addAttendee/:id", (req, res, next) => {
     //only add attendee if not yet signed uo
-    eventdata.find( 
+    bookData.find( 
         {_id: req.params.id, attendees: req.body._id }, 
         (error, data) => { 
             if (error) {
                 return next(error);
             } else {
                 if (data.length == 0) {
-                    eventdata.updateOne(
+                    bookData.updateOne(
                         { _id: req.params.id }, 
                         { $push: { attendees: req.body._id } },
                         (error, data) => {
@@ -155,7 +155,7 @@ router.put("/addAttendee/:id", (req, res, next) => {
 //GET for event history for past 2 months with the list of attendees
 router.get("/search_2_months/", (req,res,next)=>{
 
-    eventdata.find({
+    bookData.find({
     date: {
         $gte: subtractMonths(new Date(), 2),
         $lte: new Date()

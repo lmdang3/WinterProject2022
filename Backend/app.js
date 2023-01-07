@@ -16,6 +16,7 @@ app.use(cors({
 
 //sets up mongoose for the mongoDB connection
 mongoose
+  .set('strictQuery', false)
   .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Database connection Success!");
@@ -28,9 +29,9 @@ mongoose
 // const PORT = process.env.PORT || 3000;
 const PORT = process.env.PORT ;
 
-const ORG_NAME = process.env.ORG_NAME;
+
 console.log(PORT)
-console.log(ORG_NAME)
+
 
 // setting up the enviroment variable to be exported
 var Organization_Name = process.env.Organization_Name;

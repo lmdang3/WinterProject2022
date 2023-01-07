@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'; // lets us link pages
-import axios from "axios";
+
 
 // This page is going to grab data from the new your time developer api and return the top selling data
 
@@ -13,25 +13,8 @@ import axios from "axios";
 
 // html data
 function TopBooks() {
-  // const axiosInstance = axios.create({
-  //   baseURL: '/api/',
-  //   timeout: 2000,
-  //   headers: { 'X-Custom-Header': 'foobar' }
-  // });
 
-  // used to grab a variable from the env variable
-  // import.meta.env.VITE_ROOT_API
-  // const baseURL = "http://localhost:3000/userRatingData/"
-  // const [post, setPost] = React.useState(null);
 
-  // React.useEffect(() => {
-  //   axios.get(baseURL).then((response) => {
-  //     setPost(response.data);
-  
-  //   });
-  // }, []);
-
-  // if (!post) return null;
 
   return (
 
