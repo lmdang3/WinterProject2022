@@ -1,4 +1,4 @@
-citations sheet
++++++++++++++++----------citations sheet
 
 images and logos
 
@@ -15,3 +15,5 @@ https://bobbyhadz.com/blog/react-export-multiple-functions
 
 // axio and React
 https://www.bezkoder.com/react-node-express-mongodb-mern-stack/
+https://www.digitalocean.com/community/tutorials/react-axios-react
+https://stackblitz.com/edit/react-http-get-request-examples-axios?file=App%2FGetRequestSetHeaders.jsx,App%2FGetRequestHooks.jsx*
