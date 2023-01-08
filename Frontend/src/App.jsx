@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
-import TopBooks from './pages/TopBooks';
+import GetRequestHooks from './pages/TopBooks';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
 
         <Route path="/" element={<Home />}/>
         <Route path="/about" element={<About />} />
-        <Route path = "/topbooks" element={<TopBooks />} />
+        <Route path = "/topbooks" element={<GetRequestHooks />} />
       </Routes>
     </div>
     </Router>

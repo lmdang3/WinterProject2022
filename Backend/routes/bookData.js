@@ -29,6 +29,7 @@ router.get("/", (req, res, next) => {
                 return next(error);
             } else {
                 res.json(data);
+                console.log(data)
             }
         }
     ).sort({ 'updatedAt': -1 }).limit(10);
