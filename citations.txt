@@ -14,7 +14,24 @@ learning sources
 https://bobbyhadz.com/blog/react-export-multiple-functions
 
 // axio and React
+https://stackblitz.com/edit/react-http-get-request-examples-axios?file=App%2FGetRequestSetHeaders.jsx,App%2FGetRequest.jsx    // this is my fav
+https://www.freecodecamp.org/news/how-to-use-axios-with-react/#how-to-make-a-get-request // simple object {}
 https://www.bezkoder.com/react-node-express-mongodb-mern-stack/
 https://www.digitalocean.com/community/tutorials/react-axios-react
 https://stackblitz.com/edit/react-http-get-request-examples-axios?file=App%2FGetRequestSetHeaders.jsx,App%2FGetRequestHooks.jsx*
 https://tailwindcss.com/docs/table-layout
+https://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
+
+
+// cool js solutions
+
+//optimized js find mode of an array 
+https://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
+
+// teaches fast itteration through json object or json array of objects using maps and loops 
+https://levelup.gitconnected.com/lets-loop-data-inside-a-react-component-832e9130ed0f
+
+
+// good templates to learn from 
+https://flowbite.com/docs/components/tables/   // tables 
+https://tailwind-elements.com/docs/standard/components/rating/#filled    // stars 
