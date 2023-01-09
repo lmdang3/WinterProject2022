@@ -29,7 +29,8 @@ let userDataSchema = new Schema({
 
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true 
     },
     phoneNumbers: {
         primaryPhone: {
@@ -110,11 +111,28 @@ let BooksDataSchema = new Schema({
         }
         }
       ,
-    // acts as the list of user ids
-    userReviews: [{
+    // acts as the list of user ids with desciption and rating 
+    // even if you add a book without a review it is still okay
+    userReviews: [
+        {
+    userid:{
         type: String,
-        default: null
-    }],
+        required: true
+    },
+    description: {
+        type: String,
+     
+    },
+    rating: {
+        type: Number,
+        required: true 
+    },
+    date: {
+        type: Date,
+        required: true
+    }
+}
+],
 
     bookCover: {
         type: Buffer, // casted to MongoDB's BSON type: binData
