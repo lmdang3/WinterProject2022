@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import GetRequestHooks from './pages/TopBooks';
+import BookReviews from './pages/BookReviews';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/about" element={<About />} />
         <Route path = "/topbooks" element={<GetRequestHooks />} />
+        <Route path = "/bookreviews" element={<BookReviews />} />
       </Routes>
     </div>
     </Router>

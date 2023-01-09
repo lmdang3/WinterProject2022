@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 // Lam
 
-//allow using a .env file
+//allow using a .env file but in the case of this project only using it to teach not really needed for this project
 require("dotenv").config();
 
 
@@ -19,7 +19,7 @@ const subtractMonths = (date, months) => {
 
 
 
-//GET all entries
+//GET all book entries
 router.get("/", (req, res, next) => { 
     bookData.find(    {
         org_id:process.env.ORG_ID
@@ -74,8 +74,9 @@ router.get("/client/:id", (req, res, next) => {
     );
 });
 
-//POST new event
+//POST new book
 router.post("/", (req, res, next) => { 
+
     bookData.create( 
         req.body, 
         (error, data) => { 
