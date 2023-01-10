@@ -27,11 +27,20 @@ let userDataSchema = new Schema({
         required: true
     },
 
-    email: {
+    account:{
+        
+        email: {
         type: String,
         required: true,
         unique: true 
     },
+    
+        password: {
+            type: String,
+            required: true
+        }
+    },
+    
     phoneNumbers: {
         primaryPhone: {
             type: Number,
