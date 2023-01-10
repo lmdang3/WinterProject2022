@@ -18,6 +18,9 @@ function Button({text, bg, padding}) {
 }
 
 
+
+
+
 function Navbar() {
   return (
     <div className="fixed left-0 right-0 top-0 h-16 shadow-md border-b-2 border-gray-100 bg-gray-900">
@@ -48,7 +51,11 @@ function Navbar() {
 
         <div>
           
-          <Button text="Login" bg="bg-gradient-to-r from-purple-500 to-blue-500"/>
+          <Link to = "/login">
+          <Button  text="Login" bg="bg-gradient-to-r from-purple-500 to-blue-500"/>
+
+          </Link>
+          
         </div>
       </nav>
 
