@@ -16,6 +16,8 @@ https://bobbyhadz.com/blog/react-export-multiple-functions
 // axio and React
 https://stackblitz.com/edit/react-http-get-request-examples-axios?file=App%2FGetRequestSetHeaders.jsx,App%2FGetRequest.jsx    // this is my fav
 https://www.freecodecamp.org/news/how-to-use-axios-with-react/#how-to-make-a-get-request // simple object {}
+https://www.digitalocean.com/community/tutorials/react-axios-react   // with arrays
+
 https://www.bezkoder.com/react-node-express-mongodb-mern-stack/
 https://www.digitalocean.com/community/tutorials/react-axios-react
 https://stackblitz.com/edit/react-http-get-request-examples-axios?file=App%2FGetRequestSetHeaders.jsx,App%2FGetRequestHooks.jsx*
@@ -35,3 +37,9 @@ https://levelup.gitconnected.com/lets-loop-data-inside-a-react-component-832e913
 // good templates to learn from 
 https://flowbite.com/docs/components/tables/   // tables 
 https://tailwind-elements.com/docs/standard/components/rating/#filled    // stars 
+
+// tailwind 
+
+https://www.geeksforgeeks.org/how-to-align-form-elements-to-center-using-tailwind-css/ // alligning center 
+https://tailwindcss.com/docs/align-items // alligning page spacing
+https://stackoverflow.com/questions/66119330/how-in-tailwindcss-to-make-footer-with-2-buttons-cancel-and-save-right-aligned // button side by side
