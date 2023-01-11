@@ -15,8 +15,6 @@ function App() {
     <div className="pt-20">
       <Navbar />
 
-
-      
       <Routes>
         {/* sets up the routes */}
         

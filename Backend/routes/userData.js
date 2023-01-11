@@ -42,6 +42,23 @@ router.get("/:id", (req, res, next) => {
 });
 
 
+//GET based off of credentials
+router.get("/getcredentials/:email/:password", (req, res, next) => { 
+    userData.find({ account: { email: req.params.email, password :req.params.password}}, 
+        (error, data) => {
+            if (error) {
+                return next(error);
+            } else {
+                
+                // returns the single object cause we arent gonna have more than one piece of data returned
+                res.json(data[0]);
+                console.log(data)
+            }
+        }
+
+    ).sort({ 'updatedAt': -1 }).limit(10);
+});
+
 
 //GET users based off of their phone numbers
 // http://localhost:3000/primaryData/getnum/8329412894
