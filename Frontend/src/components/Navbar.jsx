@@ -2,36 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // lets us link pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import {SmallButton} from './Login'
 import axios from 'axios';
+
 // npm i --save @fortawesome/free-brands-svg-icons
 
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userData, setUserData] = useState(null)
+
+
 
   // function that will get the user data
-  const getUserData = () => {
-    const baseURL = "http://localhost:3000/userData/getcredentials/lamdang274586@gmail.com/lamdang123"
+  // const getUserData = () => {
+  //   const [userData, setUserData] = useState(null)
+  //   const baseURL = "http://localhost:3000/userData/getcredentials/lamdang274586@gmail.com/lamdang123"
 
-    React.useEffect(() => {
-      axios.get(baseURL).then((response) => {
-        setUserData(response.data);
-      });
-    }, []);
+  //   React.useEffect(() => {
+  //     axios.get(baseURL).then((response) => {
+  //       setUserData(response.data);
+  //     });
+  //   }, []);
 
-    if (!userData) return "No post!"
-    return (
+  //   if (!userData) return "No post!"
+  //   return (
       
-        <p> Hello {userData.firstName}</p>
+  //       <p> Hello {userData.firstName}</p>
     
-    );
-    
-  }
+  //   );
+  // }
+
+
 
 
   const handleLoginClick = () => {
+    <Link to = "/loginpage" ></Link>
+
     setIsLoggedIn(true)
   }
 
@@ -72,7 +79,9 @@ function Navbar() {
         <div></div>
  
         <div className=" text-sm font-semibold uppercase text-white">
-            {getUserData()}
+            {/* {getUserData()} */}
+            <SmallButton />
+
         </div>
 
 
