@@ -2,15 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // lets us link pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import {SmallButton} from './Login'
 import axios from 'axios';
+
 // npm i --save @fortawesome/free-brands-svg-icons
+
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
 
+
+  // function that will get the user data
+  // const getUserData = () => {
+  //   const [userData, setUserData] = useState(null)
+  //   const baseURL = "http://localhost:3000/userData/getcredentials/lamdang274586@gmail.com/lamdang123"
+
+  //   React.useEffect(() => {
+  //     axios.get(baseURL).then((response) => {
+  //       setUserData(response.data);
+  //     });
+  //   }, []);
+
+  //   if (!userData) return "No post!"
+  //   return (
+      
+  //       <p> Hello {userData.firstName}</p>
+    
+  //   );
+  // }
+
+
+
+
   const handleLoginClick = () => {
+    <Link to = "/loginpage" ></Link>
+
     setIsLoggedIn(true)
   }
 
@@ -48,14 +76,18 @@ function Navbar() {
           </ul>
         </div>
 
-        {/* <div className="px-6 py-2 text-sm font-semibold uppercase text-white transition">
-          <p> Hello </p>
-        </div> */}
+        <div></div>
+ 
+        <div className=" text-sm font-semibold uppercase text-white">
+            {/* {getUserData()} */}
+            <SmallButton />
+
+        </div>
 
 
         <div className="px-6 py-2 text-sm font-semibold uppercase text-white transition">
           <Link to="/login">
-            <LoginButton onClick={() => isLoggedIn ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
+            <LoginButton onClick={() => isLoggedIn  ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
           </Link>
 
         </div>
@@ -100,33 +132,28 @@ function Greeting(props) {
 // they both do the same thing 
 
 const LoginButton = (props) => {
+
+  return (
     <button onClick={props.onClick} className="
     px-6 py-2 text-sm font-semibold uppercase 
    rounded-sm text-white transition bg-gradient-to-r from-purple-500 to-blue-500">
       <span>{props.text}</span>
     </button>
+  )
 }
 
 
 
-// function Button({text, bg}) {
+// function LoginButton (props)  {
+
 //   return (
-
-//       <button
-//         className="
-//            px-6 py-2 text-sm font-semibold uppercase 
-//           rounded-sm text-white transition bg-gradient-to-r from-purple-500 to-blue-500" >
-//         <span>Login</span>
-//       </button>
-
-//   );
-
-
-
-
-
-
-
+//     <button onClick={props.onClick} className="
+//     px-6 py-2 text-sm font-semibold uppercase 
+//    rounded-sm text-white transition bg-gradient-to-r from-purple-500 to-blue-500">
+//       <span>{props.text}</span>
+//     </button>
+//   )
+// }
 
 
 export default Navbar;
