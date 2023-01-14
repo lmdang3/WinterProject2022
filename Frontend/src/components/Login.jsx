@@ -2,10 +2,8 @@ import { Link } from 'react-router-dom'; // lets us link pages
 import { useQuery } from "react-query";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { Formik } from "formik";
-import * as EmailValidator from "email-validator";
-import * as Yup from "yup";
+
 
 // const [inputs, setInputs] = useState({}); // goal is to store the user id. object id  // putting outside cause i can alway just set thestate afterwards
 // // used to hold the based url that will be used to look for the user off of their login credentials
@@ -62,7 +60,12 @@ const validate = (values) => {
 };
 
 const submitForm = (values) => {
-  console.log(values);
+
+  if (values) {
+  return alert(JSON.stringify(values.email));}
+
+  return alert("No Data")
+
 };
 
 
@@ -83,9 +86,7 @@ export const LoginForm = () => {
           handleSubmit,
           errors,
           touched,
-          handleBlur,
-          isValid,
-          dirty
+          handleBlur
         } = formik;
 
 
@@ -141,14 +142,19 @@ export const LoginForm = () => {
               <div class="w-1/2"></div>
               <div class="w-1/2 flex justify-end">
 
-                <Link to={{
+
+{/* the logging is good alert will showcase the values, only problem is that the link isnt done yet
+
+
+                {/* <Link to={{
                   pathname: "/nav",
                   state: "" // your data array of objects needa actually fill this  with data
-                }}>
+                }}> */}
+
                   <button type="submit" class="bg-gray-500 text-white p-2 ml-6 rounded text-lg w-auto">
                     Login
                   </button>
-                </Link>
+                {/* </Link> */}
 
 
 
