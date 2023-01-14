@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // lets us link pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
-import {SmallButton} from './Login'
+import {GetUserData} from './Login'
 import axios from 'axios';
 
 // npm i --save @fortawesome/free-brands-svg-icons
@@ -80,7 +80,7 @@ function Navbar() {
  
         <div className=" text-sm font-semibold uppercase text-white">
             {/* {getUserData()} */}
-            <SmallButton />
+            <GetUserData />
 
         </div>
 
