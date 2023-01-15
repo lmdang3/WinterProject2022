@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // lets us link pages
+import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from 'react-router-dom'; // lets us link pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
-import {GetUserData} from './Login'
-import axios from 'axios';
+// gonna comment out to move the function inside of the nav bar 
+// import {GetUserData} from './Login' 
+
 
 // npm i --save @fortawesome/free-brands-svg-icons
+
+
+
+
 
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  // using useNavigate and useLocation to get data
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const [data, setData] = useState(JSON.parse(localStorage.getItem('data')) || {});
+
+
+  useEffect(() => {
+    if (location.state) {
+      localStorage.setItem('data', JSON.stringify(location.state));
+      setData(location.state);
+      setIsLoggedIn(true)
+
+    }
+  }, [location]);
+
 
 
 
@@ -27,9 +50,9 @@ function Navbar() {
 
   //   if (!userData) return "No post!"
   //   return (
-      
+
   //       <p> Hello {userData.firstName}</p>
-    
+
   //   );
   // }
 
@@ -37,12 +60,12 @@ function Navbar() {
 
 
   const handleLoginClick = () => {
-    <Link to = "/loginpage" ></Link>
-
-    setIsLoggedIn(true)
+    navigate('/login');
   }
 
   const handleLogoutClick = () => {
+    localStorage.removeItem('data');
+    setData({});
     setIsLoggedIn(false)
   }
 
@@ -77,18 +100,21 @@ function Navbar() {
         </div>
 
         <div></div>
- 
+
         <div className=" text-sm font-semibold uppercase text-white">
-            {/* {getUserData()} */}
-            <GetUserData />
+
+{/* Set it up where if only there is data then the data will appear */}
+
+          <p>{data?.email}</p>
+          <p>{data?.password}</p>
 
         </div>
 
 
         <div className="px-6 py-2 text-sm font-semibold uppercase text-white transition">
-          <Link to="/login">
-            <LoginButton onClick={() => isLoggedIn  ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
-          </Link>
+       
+            <LoginButton onClick={() => isLoggedIn ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
+  
 
         </div>
       </nav>
