@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // lets us link pages
+// import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from 'react-router-dom'; // lets us link pages
 import axios from 'axios';
 
 // this component grabs the most popular books according to the new york times api 
@@ -64,6 +64,12 @@ function ComputeAvgRating(array) {
 function BookReviews() {
     const [totalReactPackages, setTotalReactPackages] = useState([]);
 
+    // using useNavigate and useLocation to get data
+    // const navigate = useNavigate();
+    // const location = useLocation();
+    // gets the data from the local storage
+    // const [data, setData] = useState(JSON.parse(localStorage.getItem('data')) || {});
+
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         axios.get('http://localhost:3000/bookData/')
@@ -74,14 +80,30 @@ function BookReviews() {
         // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
 
+
+    // useEffect(() => {
+    //     if (location.state) {
+    //       localStorage.setItem('data', JSON.stringify(location.state));
+    //       setData(location.state);
+    //     }
+    // }, [location]);
+
+
+    const handleRowClick = (id) => {
+        alert(id)
+        // Perform any other actions as needed
+      }
+
+
+
+
+
     return (
 
         <section class="bg-white dark:bg-gray-900">
             {/* this line in the tailwind class aligns the text to the left max-w-2xl */}
             {/* this part of the css controls the sizing of the text xl:text-45xl */}
             <h1 class="text-center mb-4 text-4xl font-extrabold leading-none md:text-5xl xl:text-45xl dark:text-white">Reviews By Our Users</h1>
-
-
 
             <p class="text-center mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Create an account to leave a review</p>
             {/* by {books.author}, {books.description} */}
@@ -108,8 +130,6 @@ function BookReviews() {
                             <th scope="col" class="px-6 py-3">
                                 Book Title
                             </th>
-
-
                             <th scope="col" class="px-6 py-3">
                                 Author
                             </th>
@@ -124,12 +144,15 @@ function BookReviews() {
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
+                        
 
 
                         {totalReactPackages.map((books) => (
 
-                            <tr key={books._id} onClick="" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            // set up where when click it takes the data to another page
+                            <tr onClick={() => handleRowClick(books._id)} key={books._id} class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
 
 
                                 <td scope="col" class="px-6 py-4">
@@ -153,6 +176,7 @@ function BookReviews() {
 
 
                             </tr>
+                     
                         ))}
 
 

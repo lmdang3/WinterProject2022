@@ -5,9 +5,10 @@ import Navbar from './components/Navbar';
 import {LoginForm} from './components/Login';
 // Main Pages
 import Home from './pages/Home';
-import About from './pages/About';
+import AboutMe from './pages/About';
 import GetRequestHooks from './pages/TopBooks';
 import BookReviews from './pages/BookReviews';
+import Docs from './pages/Docs'
 
 function App() {
   return (
@@ -19,10 +20,11 @@ function App() {
         {/* sets up the routes */}
         
         <Route path="/" element={<Home />}/>
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<AboutMe />} />
         <Route path = "/topbooks" element={<GetRequestHooks />} />
         <Route path = "/bookreviews" element={<BookReviews />} />
         <Route path="/nav" element={<Navbar />}/>
+        <Route path="/docs" element={<Docs />}/>
 
         {/* Take to the login */}
         <Route path = "/login" element = {<LoginForm/>} />
