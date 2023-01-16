@@ -174,7 +174,7 @@ export const LoginForm = () => {
 
 
 
-                  <Link to="/about">
+                  <Link to="/register">
                     <button class="bg-yellow-500 text-white p-2 ml-6 rounded text-lg w-auto">
                       Register
                     </button>

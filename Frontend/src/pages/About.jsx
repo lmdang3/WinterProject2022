@@ -58,26 +58,52 @@ const AboutMe = () => {
               <a href="https://www.linkedin.com/in/lam-dang-22684a1a1/"><p className="mt-2 text-xs text-blue-600 dark:text-blue-500 hover:underline" >Linkedin: lmdang</p></a>
               <br></br>
             </div>
-            It was during my time at accenture that I learned the importance of team work and the importance of testing before deployment.  However, it was my sophmore year of college that made me decide to go down the route of being a developer. 
+            It was during my time at accenture that I learned the importance of team work and the importance of testing before deployment.  However, it was my sophmore year of college that made me decide to go down the route of being a developer.
             I realized that I put alot of time into learning to programing and problem solve, but most importantly
-           I find the process to be enjoyable. Over the course of undergrad my higher level course reaffirm my interest in the field of software developement. I enjoy the challenges presented with problem solving and I approach programming with 
-           the mindset of finding a solution for every problem.
+            I find the process to be enjoyable. Over the course of undergrad my higher level course reaffirm my interest in the field of software developement. I enjoy the challenges presented with problem solving and I approach programming with
+            the mindset of finding a solution for every problem.
             All of these factors is what made me decide that being a developer is the only career path for myself.
 
           </p>
 
-          <button onClick={() => setShowSkills(!showSkills)} className="font-bold text-m mt-4 marker:tab-button">
+          {/* <button onClick={() => setShowSkills(!showSkills)} className="font-bold text-m mt-4 marker:tab-button">
             Technical Skills - Click here to {showSkills ? "hide" : "view"}
-          </button>
-          <br></br>
+          </button> */}
+
+
+
+
+
+          <a onClick={() => setShowSkills(!showSkills)} class="relative inline-flex items-center justify-center inline-block p-1 px-1 py-2 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group mt-4">
+            <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-red-500 rounded-full blur-md ease"></span>
+            <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+              <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
+              <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-pink-500 rounded-full blur-md"></span>
+            </span>
+            <span class="relative text-white">Click here to {showSkills ? "hide" : "view"} skills</span>
+          </a>
+
 
           {showSkills ? skillsData() : null}
-          <button onClick={() => setShowPortfolio(!showPortfolio)} className="font-bold text-m mt-4 marker:tab-button">
-            Portfolio - Click here to {showPortfolio ? "hide" : "view"}
-          </button>
+
+
+
+
+          <br></br>
+
+          <a onClick={() => setShowPortfolio(!showPortfolio)} class="relative inline-flex items-center justify-center inline-block p-1 px-1 py-2 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group mt-4">
+            <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-red-500 rounded-full blur-md ease"></span>
+            <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+              <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
+              <span class="absolute bottom-0 right-0 w-40 h-24 -mr-10 bg-pink-500 rounded-full blur-md"></span>
+            </span>
+            <span class="relative text-white">Portfolio - Click here to {showPortfolio ? "hide" : "view"}</span>
+          </a>
+
+
 
           {/* Where the Scenario is applied if the data is set then it show else false */}
-       
+
           {showPortfolio ? portData() : null}
 
         </div>
@@ -94,6 +120,8 @@ const styles = {
     marginTop: '1rem'
   }
 }
+
+
 
 
 

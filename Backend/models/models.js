@@ -11,7 +11,7 @@ let userDataSchema = new Schema({
     // we dont have to insert into the body but i want to show that it is possible
     organization_Name:{
         type: String,
-        default:  parseInt(process.env.Organization_Name)
+        default:  process.env.Organization_Name
     },
 
     firstName: {
@@ -68,7 +68,11 @@ let userDataSchema = new Schema({
             type: String,
             required: true
         },
-        county: {
+        state: {
+            type: String,
+            required: true
+        },
+        country: {
             type: String,
             required: true
         },

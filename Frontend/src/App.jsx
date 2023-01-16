@@ -9,6 +9,7 @@ import AboutMe from './pages/About';
 import GetRequestHooks from './pages/TopBooks';
 import BookReviews from './pages/BookReviews';
 import Docs from './pages/Docs'
+import {RegisterForm} from './components/Register'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         {/* Take to the login */}
         <Route path = "/login" element = {<LoginForm/>} />
         {/* Takes to create a new acct */}
+        <Route path = "/register" element = {<RegisterForm/>} />
 
 
       </Routes>
