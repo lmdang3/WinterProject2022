@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+#profile-image {
+    width: 200px;
+    height:250px;
+}
+
+@media (max-width: 767px) {
+    #profile-image {
+        width: 50x;
+        height: 50px;
+    }
+}
+
+.hidden {
+    display: none;
+  }
+
+
+  
+  
+  
+  

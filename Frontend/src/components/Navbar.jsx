@@ -2,20 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from 'react-router-dom'; // lets us link pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
-// gonna comment out to move the function inside of the nav bar 
-// import {GetUserData} from './Login' 
-
-
-// npm i --save @fortawesome/free-brands-svg-icons
-
-
-
 
 
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
   // using useNavigate and useLocation to get data
   const navigate = useNavigate();
@@ -30,6 +23,7 @@ function Navbar() {
       localStorage.setItem('data', JSON.stringify(location.state));
       setData(location.state);
       setIsLoggedIn(true)
+      navigate('/');
 
     }
   }, [location]);
@@ -37,36 +31,20 @@ function Navbar() {
 
 
 
-  // function that will get the user data
-  // const getUserData = () => {
-  //   const [userData, setUserData] = useState(null)
-  //   const baseURL = "http://localhost:3000/userData/getcredentials/lamdang274586@gmail.com/lamdang123"
-
-  //   React.useEffect(() => {
-  //     axios.get(baseURL).then((response) => {
-  //       setUserData(response.data);
-  //     });
-  //   }, []);
-
-  //   if (!userData) return "No post!"
-  //   return (
-
-  //       <p> Hello {userData.firstName}</p>
-
-  //   );
-  // }
-
-
 
 
   const handleLoginClick = () => {
     navigate('/login');
+    // setIsLoggedIn(true)
+
   }
 
   const handleLogoutClick = () => {
     localStorage.removeItem('data');
     setData({});
     setIsLoggedIn(false)
+    navigate('/');
+
   }
 
   // const coolClick = () => {

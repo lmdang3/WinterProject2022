@@ -48,3 +48,11 @@ https://tailwind-elements.com/docs/standard/components/rating/#filled    // star
 https://www.geeksforgeeks.org/how-to-align-form-elements-to-center-using-tailwind-css/ // alligning center 
 https://tailwindcss.com/docs/align-items // alligning page spacing
 https://stackoverflow.com/questions/66119330/how-in-tailwindcss-to-make-footer-with-2-buttons-cancel-and-save-right-aligned // button side by side
+https://devdojo.com/tailwindcss/buttons#_   // tailwind buttons
+https://tailwinduikit.com/components/webapp/form/input_group  // alot of free tailwind kits
+
+
+
+some of the libaries i installed
+npm install @fortawesome/free-solid-svg-icons
+npm install @fortawesome/free-brands-svg-icon
