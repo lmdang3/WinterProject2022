@@ -62,7 +62,7 @@ const validate = (values) => {
         errors.city = "City is required";
     }
     if (!values.state) {
-        errors.state = "state is required";
+        errors.state = "State is required";
     }
     if (!values.country) {
         errors.country = "Country is required";
@@ -379,7 +379,7 @@ export const RegisterForm = () => {
                                         </label>
                                         <input type="text" id="State/Province" value={values.state} onChange={handleChange} onBlur={handleBlur} name="state" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder="California" />
                                         {errors.state && touched.state && (
-                                            <div className="text-red-600 text-xs italic">{errors.zip}</div>
+                                            <div className="text-red-600 text-xs italic">{errors.state}</div>
                                         )}
                                     </div>
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
