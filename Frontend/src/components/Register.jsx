@@ -164,7 +164,10 @@ export const RegisterForm = () => {
                                 </div>
                             </div>
                             <div className="mx-auto pt-4">
-                                <div className="container mx-auto">
+                                <div className="container mx-auto flex-wrap">
+
+
+                                    <div className = "flex">
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="firstName" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             First Name
@@ -173,11 +176,18 @@ export const RegisterForm = () => {
                                         {errors.firstName && touched.firstName && (
                                             <div className="text-red-600 text-xs italic">{errors.firstName}</div>
                                         )}
+                                    </div>
 
+                                    
+                                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 ml-4">
+                                        <label htmlFor="lastName" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
+                                            Middle Name
+                                        </label>
+                                        <input type="text" name="middleName" required value={values.middleName} onChange={handleChange} onBlur={handleBlur} className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder = "Optional"/>
                                     </div>
 
 
-                                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
+                                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 ml-4">
                                         <label htmlFor="lastName" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Last Name
                                         </label>
@@ -186,11 +196,13 @@ export const RegisterForm = () => {
                                             <div className="text-red-600 text-xs italic">{errors.lastName}</div>
                                         )}
                                     </div>
+                                    </div>
+
+
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="Email" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Email
                                         </label>
-
 
                                         <div className={`border ${errors.email ? 'border-red-400' : errors.successfulEmail ? 'border-green-400' : ''} shadow-sm rounded flex`}>
                                             <div className={`border ${errors.email ? 'border-red-400' : errors.successfulEmail ? 'border-green-400' : ''} px-4 py-3 dark:text-gray-100 shadow-sm flex items-center border-r`}>
@@ -249,7 +261,7 @@ export const RegisterForm = () => {
                                         <label htmlFor="StreetAddress" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Street Address
                                         </label>
-                                        <input type="text" value={values.line1} onChange={handleChange} onBlur={handleBlur} name="line1" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder />
+                                        <input type="text" value={values.line1} onChange={handleChange} onBlur={handleBlur} name="line1" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder = "Optional" />
                                         {errors.line1 && touched.line1 && (
                                             <div className="text-red-600 text-xs italic">{errors.line1}</div>
                                         )}
