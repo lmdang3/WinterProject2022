@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Formik } from "formik";
 
 
+
 // const [inputs, setInputs] = useState({}); // goal is to store the user id. object id  // putting outside cause i can alway just set thestate afterwards
 // // used to hold the based url that will be used to look for the user off of their login credentials
 // const baseURL = "http://localhost:3000/userData/getcredentials/"
@@ -24,7 +25,6 @@ const initialValues = {
     country: "",
     zip: ""
 
-
 };
 
 const validate = (values) => {
@@ -36,13 +36,30 @@ const validate = (values) => {
     }
 
     if (!values.email) {
-        errors.email = "Email is required";
+        errors.email = "Email is required   ";
     } else if (!regex.test(values.email)) {
-        errors.email = "Invalid Email";
+        errors.email = "Invalid Email   ";
+    }
+    else if (values.email && regex.test(values.email)) {
+        errors.successfulEmail = "Email submission success!"
+    }
+    else {
+        pass.email = "Email submission success!";
+    }
+
+    if (!values.line1) {
+        errors.line1 = "Street address is required";
+    }
+    else if (values.line1.length < 6) {
+        errors.line1 = "Street address should have at least 6 characters";
+    }
+    if (!values.city) {
+        errors.city = "City is required";
     }
 
 
     return errors;
+
 };
 
 
@@ -52,21 +69,18 @@ export const RegisterForm = () => {
     // const navigate = useNavigate();
 
     const submitForm = (values) => {
-        try{
+        try {
             // where i am at rn the alert will not pass values but data is logged in the console
             console.log(values)
             alert(values)
-    
+
         }
         catch (error) {
             console.log(error);
-          } finally {
+        } finally {
             console.log(values)
-       
-          }
 
-
-
+        }
     }
 
 
@@ -117,11 +131,6 @@ export const RegisterForm = () => {
                                         <div className="text-red-600 text-xs italic">{errors.firstName}</div>
                                     )}
 
-
-
-
-
-
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="lastName" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Last Name
@@ -135,49 +144,89 @@ export const RegisterForm = () => {
 
 
 
+
+
+
+
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="Email" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Email
                                         </label>
-                                        <div className="border border-green-400 shadow-sm rounded flex">
-                                            <div className="px-4 py-3 dark:text-gray-100 flex items-center border-r border-green-400">
+
+
+                                        <div className={`border ${errors.email ? 'border-red-400' : errors.successfulEmail ? 'border-green-400' : ''} shadow-sm rounded flex`}>
+                                            <div className={`border ${errors.email ? 'border-red-400' : errors.successfulEmail ? 'border-green-400' : ''} px-4 py-3 dark:text-gray-100 shadow-sm flex items-center border-r`}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-mail" width={20} height={20} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" />
                                                     <rect x={3} y={5} width={18} height={14} rx={2} />
                                                     <polyline points="3 7 12 13 21 7" />
                                                 </svg>
                                             </div>
-                                            <input type="text" name="email" required value={values.email} onChange={handleChange} onBlur={handleBlur} className="pl-3 py-3 w-full text-sm focus:outline-none placeholder-gray-500 rounded bg-transparent text-gray-500 dark:text-gray-400" placeholder="example@gmail.com" />
+                                            <input type="text"
+                                                name="email"
+                                                required
+                                                value={values.email}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                className={`pl-3 py-3 w-full text-sm focus:outline-none placeholder-gray-500 rounded bg-transparent text-gray-500 dark:text-gray-400 ${errors.email ? 'border-red-600 ' : errors.successfulEmail ? 'border-green-600' : ''}`}
+                                                placeholder="example@gmail.com"
+                                            />
                                         </div>
-                                        {errors.email && touched.email && (
-                                            <div className="text-red-600 text-xs italic">{errors.email}</div>
+
+
+
+                                        {/* sets up condtion for the css  */}
+                                        {errors && touched.email && (
+                                            <div className={`text-${errors.email ? 'red' : 'green'}-600 text-xs italic flex justify-content-end`}>
+                                                <div className="inline-block">
+
+                                                    <p className={`text-xs ${errors.successfulEmail ? 'text-green-600' : ''} inline-block`}>  {errors.email || errors.successfulEmail}
+
+                                                        {errors.email && (
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x-circle inline-block">
+                                                                <circle cx={12} cy={12} r={10} />
+                                                                <line x1={15} y1={9} x2={9} y2={15} />
+                                                                <line x1={9} y1={9} x2={15} y2={15} />
+                                                            </svg>
+                                                        )}  {errors.successfulEmail && (
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={16} height={16} className="inline-block">
+                                                                <path
+                                                                    className="heroicon-ui"
+                                                                    d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0
+                                                    0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
+                                                                    stroke="green"
+                                                                    strokeWidth="0.25"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    fill="green"
+                                                                />
+                                                            </svg>)}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         )}
 
-
-
-
-                                        <div className="flex justify-between items-center pt-1 text-green-400">
-                                            <p className="text-xs">Email submission success!</p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={16} height={16}>
-                                                <path
-                                                    className="heroicon-ui"
-                                                    d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0
-                              0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
-                                                    stroke="currentColor"
-                                                    strokeWidth="0.25"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    fill="currentColor"
-                                                />
-                                            </svg>
-                                        </div>
                                     </div>
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="StreetAddress" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Street Address
                                         </label>
                                         <input type="text" value={values.line1} onChange={handleChange} onBlur={handleBlur} name="line1" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder />
+                                        {errors.line1 && touched.line1 && (
+                                        <div className="text-red-600 text-xs italic">{errors.line1}</div>
+                                    )}
                                     </div>
+
+
+           
+
+
+
+
+
+
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="StreetAddress" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Street Address 2
@@ -229,11 +278,7 @@ export const RegisterForm = () => {
                                         <input type="text" value={values.zip} onChange={handleChange} onBlur={handleBlur} name="zip" required id="ZIP" className="bg-transparent border border-red-400 pl-3 py-3 shadow-sm rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder={86745} />
                                         <div className="flex justify-between items-center pt-1 text-red-400">
                                             {/* <p className="text-xs">Incorrect Zip Code</p> */}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x-circle">
-                                                <circle cx={12} cy={12} r={10} />
-                                                <line x1={15} y1={9} x2={9} y2={15} />
-                                                <line x1={9} y1={9} x2={15} y2={15} />
-                                            </svg>
+
                                         </div>
                                     </div>
 
