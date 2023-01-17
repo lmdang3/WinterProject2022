@@ -63,6 +63,8 @@ const validate = (values) => {
 export const LoginForm = () => {
   const [invalidLogin, setinvalidLogin] = useState(null)
   const navigate = useNavigate();
+
+  // used for submitting data
   const submitForm = async (values, { setSubmitting }) => {
     try {
       setSubmitting(true);

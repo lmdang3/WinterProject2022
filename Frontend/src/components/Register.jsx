@@ -1,8 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Formik } from "formik";
-
+import { Formik, Form, Field } from "formik";
+import cities from "../data/cities";
+import countries from "../data/countries"
 
 
 // const [inputs, setInputs] = useState({}); // goal is to store the user id. object id  // putting outside cause i can alway just set thestate afterwards
@@ -34,19 +35,15 @@ const validate = (values) => {
     if (!values.firstName) {
         errors.firstName = "First name is required";
     }
+    if (!values.lastName) {
+        errors.lastName = "Last name is required";
+    }
 
     if (!values.email) {
         errors.email = "Email is required   ";
     } else if (!regex.test(values.email)) {
         errors.email = "Invalid Email   ";
     }
-    else if (values.email && regex.test(values.email)) {
-        errors.successfulEmail = "Email submission success!"
-    }
-    else {
-        pass.email = "Email submission success!";
-    }
-
     if (!values.line1) {
         errors.line1 = "Street address is required";
     }
@@ -55,6 +52,21 @@ const validate = (values) => {
     }
     if (!values.city) {
         errors.city = "City is required";
+    }
+    if (!values.state) {
+        errors.state = "state is required";
+    }
+    if (!values.country) {
+        errors.country = "Country is required";
+    } else if (values.country.length < 4) {
+        errors.country = "Country should have at least 6 characters";
+    }
+
+    if (!values.zip) {
+        errors.zip = "Zip code is required";
+    }
+    else if (values.zip.length != 5) {
+        errors.zip = "Zip code has few or too many digits";
     }
 
 
@@ -65,21 +77,54 @@ const validate = (values) => {
 
 
 export const RegisterForm = () => {
-    // const [invalidLogin, setinvalidLogin] = useState(null)
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [job, setJob] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [data, setData] = useState(null);
 
     const submitForm = (values) => {
         try {
+
             // where i am at rn the alert will not pass values but data is logged in the console
             console.log(values)
-            alert(values)
+            // alert(values.firstName)
+            setLoading(true);
+            setIsError(false);
+            const data = {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                line1: values.line1,
+                line2: values.line2,
+                city: values.city,
+                state: values.state,
+                country: values.country,
+                zip: values.zip
+            }
+            // console.log(payload)
+            // grabing the vite env variable
+            // POST request using axios inside useEffect React hook
+            let baseURL = import.meta.env.VITE_ROOT_API
+
+            axios.post(baseURL + '/userData/', data)
+                .then(res => {
+                    setData(res.data);
+                    setName('');
+                    setJob('');
+                    setLoading(false);
+                }).catch(err => {
+                    setLoading(false);
+                    setIsError(true);
+                });
+
 
         }
         catch (error) {
             console.log(error);
         } finally {
-            console.log(values)
-
+            console.log("something has happened")
         }
     }
 
@@ -106,7 +151,7 @@ export const RegisterForm = () => {
 
                 return (
 
-                    <form onSubmit={handleSubmit} class="object-center">
+                    <Form onSubmit={handleSubmit} class="object-center">
                         <div className="container mx-auto bg-white dark:bg-gray-800 mt-10 rounded px-4">
                             <div className="xl:w-full border-b border-gray-300 dark:border-gray-700 py-5">
                                 <div className="flex w-11/12 mx-auto xl:w-full xl:mx-0 items-center">
@@ -125,29 +170,22 @@ export const RegisterForm = () => {
                                             First Name
                                         </label>
                                         <input type="text" value={values.firstName} name="firstName" required onChange={handleChange} onBlur={handleBlur} className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder />
+                                        {errors.firstName && touched.firstName && (
+                                            <div className="text-red-600 text-xs italic">{errors.firstName}</div>
+                                        )}
+
                                     </div>
 
-                                    {errors.firstName && touched.firstName && (
-                                        <div className="text-red-600 text-xs italic">{errors.firstName}</div>
-                                    )}
 
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="lastName" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Last Name
                                         </label>
                                         <input type="text" name="lastName" required value={values.lastName} onChange={handleChange} onBlur={handleBlur} className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder />
+                                        {errors.lastName && touched.lastName && (
+                                            <div className="text-red-600 text-xs italic">{errors.lastName}</div>
+                                        )}
                                     </div>
-                                    {errors.lastName && touched.lastName && (
-                                        <div className="text-red-600 text-xs italic">{errors.lastName}</div>
-                                    )}
-
-
-
-
-
-
-
-
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="Email" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Email
@@ -173,14 +211,12 @@ export const RegisterForm = () => {
                                             />
                                         </div>
 
-
-
                                         {/* sets up condtion for the css  */}
                                         {errors && touched.email && (
                                             <div className={`text-${errors.email ? 'red' : 'green'}-600 text-xs italic flex justify-content-end`}>
                                                 <div className="inline-block">
 
-                                                    <p className={`text-xs ${errors.successfulEmail ? 'text-green-600' : ''} inline-block`}>  {errors.email || errors.successfulEmail}
+                                                    <p className={`text-xs ${!errors.email ? 'text-green-600' : ''} inline-block`}>  {errors.email || "Successful Email"}
 
                                                         {errors.email && (
 
@@ -189,7 +225,7 @@ export const RegisterForm = () => {
                                                                 <line x1={15} y1={9} x2={9} y2={15} />
                                                                 <line x1={9} y1={9} x2={15} y2={15} />
                                                             </svg>
-                                                        )}  {errors.successfulEmail && (
+                                                        )}  {!errors.email && (
 
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={16} height={16} className="inline-block">
                                                                 <path
@@ -215,17 +251,9 @@ export const RegisterForm = () => {
                                         </label>
                                         <input type="text" value={values.line1} onChange={handleChange} onBlur={handleBlur} name="line1" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder />
                                         {errors.line1 && touched.line1 && (
-                                        <div className="text-red-600 text-xs italic">{errors.line1}</div>
-                                    )}
+                                            <div className="text-red-600 text-xs italic">{errors.line1}</div>
+                                        )}
                                     </div>
-
-
-           
-
-
-
-
-
 
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="StreetAddress" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
@@ -233,36 +261,38 @@ export const RegisterForm = () => {
                                         </label>
                                         <input type="text" value={values.line2} onChange={handleChange} onBlur={handleBlur} name="line2" className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder="Optional" />
                                     </div>
+
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="City" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             City
                                         </label>
-                                        <div className="border border-gray-300 dark:border-gray-700 shadow-sm rounded flex">
-                                            <input type="text" value={values.city} onChange={handleChange} onBlur={handleBlur} name="city" required className="pl-3 py-3 w-full text-sm focus:outline-none border border-transparent focus:border-indigo-700 bg-transparent rounded placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder="Los Angeles" />
-                                            <div className="px-4 flex items-center border-l border-gray-300 dark:border-gray-700 flex-col justify-center text-gray-500 dark:text-gray-400">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-up" width={16} height={16} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" />
-                                                    <polyline points="6 15 12 9 18 15" />
-                                                </svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-down" width={16} height={16} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" />
-                                                    <polyline points="6 9 12 15 18 9" />
-                                                </svg>
-                                            </div>
-                                        </div>
+
+                                        <Field as="select" name="city" value={values.city} className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none" >
+                                            <option className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none" value="" disabled>Select a city</option>
+                                            {cities.map((city) => (
+                                                <option key={city} value={city}>{city}</option>
+                                            ))}
+                                        </Field>
                                     </div>
+
+
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="State/Province" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             State/Province
                                         </label>
                                         <input type="text" id="State/Province" value={values.state} onChange={handleChange} onBlur={handleBlur} name="state" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder="California" />
+                                        {errors.state && touched.state && (
+                                            <div className="text-red-600 text-xs italic">{errors.zip}</div>
+                                        )}
                                     </div>
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <label htmlFor="Country" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                             Country
                                         </label>
                                         <input type="text" value={values.country} onChange={handleChange} onBlur={handleBlur} name="country" required className="border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm bg-transparent rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder="United States" />
-
+                                        {errors.country && touched.country && (
+                                            <div className="text-red-600 text-xs italic">{errors.country}</div>
+                                        )}
                                     </div>
                                     <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6">
                                         <div className="flex items-center pb-2">
@@ -275,10 +305,12 @@ export const RegisterForm = () => {
                                                 </svg>
                                             </div>
                                         </div>
-                                        <input type="text" value={values.zip} onChange={handleChange} onBlur={handleBlur} name="zip" required id="ZIP" className="bg-transparent border border-red-400 pl-3 py-3 shadow-sm rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder={86745} />
-                                        <div className="flex justify-between items-center pt-1 text-red-400">
-                                            {/* <p className="text-xs">Incorrect Zip Code</p> */}
+                                        <input type="text" value={values.zip} onChange={handleChange} onBlur={handleBlur} name="zip" required id="ZIP" className="bg-transparent border pl-3 py-3 shadow-sm rounded text-sm focus:outline-none focus:border-indigo-700 placeholder-gray-500 text-gray-500 dark:text-gray-400" placeholder={86745} />
+                                        {errors.zip && touched.zip && (
+                                            <div className="text-red-600 text-xs italic">{errors.zip}</div>
+                                        )}
 
+                                        <div className="flex justify-between items-center pt-t ">
                                         </div>
                                     </div>
 
@@ -287,9 +319,11 @@ export const RegisterForm = () => {
                                     </button>
                                     {/* </Link> */}
 
-                                    <button class="bg-yellow-500 text-white p-2 ml-6 rounded text-lg w-auto">
-                                        Cancel
-                                    </button>
+                                    <Link to="/login">
+                                        <button class="bg-yellow-500 text-white p-2 ml-6 rounded text-lg w-auto">
+                                            Cancel
+                                        </button>
+                                    </Link>
 
                                 </div>
 
@@ -299,7 +333,7 @@ export const RegisterForm = () => {
 
                         </div>
 
-                    </form>
+                    </Form>
                 );
             }}
 
