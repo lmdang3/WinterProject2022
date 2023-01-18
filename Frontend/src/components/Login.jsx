@@ -4,32 +4,6 @@ import axios from 'axios';
 import { Formik } from "formik";
 
 
-// const [inputs, setInputs] = useState({}); // goal is to store the user id. object id  // putting outside cause i can alway just set thestate afterwards
-// // used to hold the based url that will be used to look for the user off of their login credentials
-// const baseURL = "http://localhost:3000/userData/getcredentials/"
-
-
-
-// export const GetUserData = (values) => {
-//   if (values) {
-//     console.log(values.firstName)
-//     // // console.log(values.email)
-//     // const baseURL = "http://localhost:3000/userData/getcredentials/" + values.email + "/" + values.password
-//     // console.log(baseURL)
-
-//     // const response = await axios.get(baseURL);
-//     // console.log(response.data);
-//     // let data = response.data;
-
-
-//     return (
-//       <p> Hello {values.firstName} </p>
-//     );
-//   }
-//   return null
-// };
-
-
 
 const initialValues = {
   email: "",

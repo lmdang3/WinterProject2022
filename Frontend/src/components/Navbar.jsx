@@ -65,6 +65,8 @@ function Navbar() {
             <li><Link to="/bookreviews" className="text-gray-400 hover:text-gray-100">Reviews</Link></li>
             <li><Link to="/docs" className="text-gray-400 hover:text-gray-100">Docs</Link></li>
 
+
+
           </ul>
         </div>
 
@@ -78,10 +80,10 @@ function Navbar() {
         </div>
 
         <div></div>
-
+ 
         <div className=" text-sm font-semibold uppercase text-white">
 
-{/* Set it up where if only there is data then the data will appear */}
+          {/* Set it up where if only there is data then the data will appear */}
 
           <p>{data?.email}</p>
           <p>{data?.password}</p>
@@ -90,9 +92,9 @@ function Navbar() {
 
 
         <div className="px-6 py-2 text-sm font-semibold uppercase text-white transition">
-       
-            <LoginButton onClick={() => isLoggedIn ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
-  
+
+          <LoginButton onClick={() => isLoggedIn ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
+
 
         </div>
       </nav>
