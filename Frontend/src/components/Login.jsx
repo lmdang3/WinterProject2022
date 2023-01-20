@@ -47,7 +47,7 @@ export const LoginForm = () => {
       if (response.data) {
         let data = response.data
         console.log(data)
-        navigate('/nav', { state: values });
+        navigate('/nav', { state: { login_email: values.email , login_password: values.password } });
       }
       else {
       

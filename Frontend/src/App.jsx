@@ -10,7 +10,7 @@ import GetRequestHooks from './pages/TopBooks';
 import BookReviews from './pages/BookReviews';
 import Docs from './pages/Docs';
 import { RegisterForm } from './components/Register';
-import tyPage from './pages/ThankYouPage';
+import Thank from './pages/ThankYouPage';
 
 
 
@@ -35,7 +35,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           {/* Takes to create a new acct */}
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/typage" element={<tyPage />} />
+          <Route path="/thank" element={<Thank />} />
         
 
         </Routes>

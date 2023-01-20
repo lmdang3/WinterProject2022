@@ -13,23 +13,35 @@ function Navbar() {
   // using useNavigate and useLocation to get data
   const navigate = useNavigate();
   const location = useLocation();
+  const [data, setData] = useState(JSON.parse(sessionStorage.getItem('login_data')) || "");
 
 
-  const [data, setData] = useState(JSON.parse(localStorage.getItem('data')) || {});
+  const [email, setEmail] = useState(data.login_email || "");
+  const [password, setPassword] = useState(data.login_password || "");
 
 
+
+
+  // use effect will run every time the page is rendered so if statement is needed to stop the hook
   useEffect(() => {
     if (location.state) {
-      localStorage.setItem('data', JSON.stringify(location.state));
-      setData(location.state);
-      setIsLoggedIn(true)
-      navigate('/');
+      if (location.state.hasOwnProperty('login_email') && location.state.hasOwnProperty('login_password')) {
+        const { login_email, login_password } = location.state;
+        sessionStorage.setItem('login_data', JSON.stringify(location.state));
+        // setData(location.state)
+        sessionStorage.setItem('login_password', login_password);
+        sessionStorage.setItem('login_email', login_email);
+        setIsLoggedIn(true)
 
+      }
+
+      return null
     }
   }, [location]);
 
 
-
+  // const login_email = location.state?.login_email ?? 'email not provided';
+  // const login_password = location.state?.login_password ?? 'password not provided';
 
 
 
@@ -40,9 +52,10 @@ function Navbar() {
   }
 
   const handleLogoutClick = () => {
-    localStorage.removeItem('data');
-    setData({});
+    sessionStorage.clear()
     setIsLoggedIn(false)
+
+
     navigate('/');
 
   }
@@ -80,13 +93,32 @@ function Navbar() {
         </div>
 
         <div></div>
- 
+
         <div className=" text-sm font-semibold uppercase text-white">
 
           {/* Set it up where if only there is data then the data will appear */}
 
-          <p>{data?.email}</p>
-          <p>{data?.password}</p>
+
+
+          {/* <p>{login_email ? login_email : ''}</p>
+          <p>{login_password ? login_password : ''}</p> */}
+
+          {/* Needa see if the data is in an object called values or can we call the object right away  */}
+          {/* Object is structured based on the state passed this is due to the login passing in two objects called login_email and login_password */}
+
+          {/* <p>{login_data?.login_email}</p>
+          <p>{login_data?.login_password}</p> */}
+
+          {/* <p>{data?.login_email}</p>
+          <p>{data?.login_password}</p> */}
+
+
+          {/* <p>{login_data?.email}</p>
+          <p>{login_data?.password}</p> */}
+          <p>{email}</p>
+          <p>{password}</p>
+
+
 
         </div>
 

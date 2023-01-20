@@ -143,29 +143,30 @@ export const RegisterForm = () => {
             // grabing the vite env variable
             // POST request using axios inside useEffect React hook
             let baseURL = import.meta.env.VITE_ROOT_API
+            console.log("something has happened")
+            navigate("/thank",{state: values});
             // console.log(baseURL)
 
-            axios.post(baseURL + '/userData/', data)
-                .then(res => {
-                    setData(res.data);
-                    setName('');
-                    setJob('');
-                    setLoading(false);
-                }).catch(err => {
-                    console.log(err)
-                    alert("Soemthing went wrong")
-                    setLoading(false);2
-                    setIsError(true);
-                });
+            // axios.post(baseURL + '/userData/', data)
+            //     .then(res => {
+            //         setData(res.data);
+            //         setName('');
+            //         setJob('');
+            //         setLoading(false);
+            //     }).catch(err => {
+            //         console.log(err)
+            //         alert("Soemthing went wrong")
+            //         setLoading(false);2
+            //         setIsError(true);
+            //     });
 
 
         }
         catch (error) {
             console.log(error);
-        } finally {
-            console.log("something has happened")
-            navigate("/typage");
-        }
+        } 
+           
+        
     }
 
 
