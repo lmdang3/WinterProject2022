@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, {useState} from 'react';
 import axios from 'axios';
 import { Formik } from "formik";
+import { useQuery } from 'react-query'
 
 
 
@@ -35,31 +36,47 @@ const validate = (values) => {
 
 
 export const LoginForm = () => {
-  const [invalidLogin, setinvalidLogin] = useState(null)
-  const navigate = useNavigate();
 
-  // used for submitting data
+  const [formValues, setFormValues] = useState();
+  const [invalidLogin, setInvalidLogin] = useState(null)
+  const navigate = useNavigate()
+
+  const { data, status, error, refetch } = useQuery(
+    ['credentials', formValues?.email, formValues?.password],
+    async () => {
+      const response = await axios.get(`http://localhost:3000/userData/getcredentials/${formValues.email}/${formValues.password}`)
+      return response.data
+    },
+    {
+      cacheTime: 60 * 60 * 1000, // cache the response for 1 hour
+    }
+  )
+
   const submitForm = async (values, { setSubmitting }) => {
     try {
       setSubmitting(true);
-      const baseURL = `http://localhost:3000/userData/getcredentials/${values.email}/${values.password}`;
-      const response = await axios.get(baseURL);
-      if (response.data) {
-        let data = response.data
-        console.log(data)
-        navigate('/nav', { state: { login_email: values.email , login_password: values.password } });
-      }
-      else {
-      
-      setinvalidLogin("The email or password entered is incorrect")
-
+      setFormValues(values);
+      console.log(values)
+ 
+      if (status === 'loading') return;
+      if (status === 'error') throw error;
+      if (data) {
+        setEmail(values.email)
+        setPassword(values.password)
+        navigate('/nav', { state: { login_email: values.email, login_password: values.password } });
+      } else {
+        setInvalidLogin('The email or password entered is incorrect');
       }
     } catch (error) {
       console.log(error);
     } finally {
       setSubmitting(false);
     }
-  }
+  };
+
+
+
+
 
 
   return (
@@ -68,7 +85,7 @@ export const LoginForm = () => {
 
       initialValues={initialValues}
       validate={validate}
-      onSubmit={submitForm}
+      onSubmit={(values, formik) => submitForm(values, formik, data)}
     >
       {(formik) => {
         const {
@@ -160,6 +177,7 @@ export const LoginForm = () => {
               </div>
             </form>
             <div className="text-red-600 text-xs italic">{invalidLogin}</div>
+            {status === 'loading' && <p>Loading...</p>}
           </div>
 
         );
