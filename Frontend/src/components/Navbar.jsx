@@ -1,43 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from 'react-router-dom'; // lets us link pages
+// import { EmailContext, PasswordContext } from '../App.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
-
+import { useQuery } from 'react-query'
+import { EmailContext, PasswordContext } from './../context'
 
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const email = useContext(EmailContext)
+  const password = useContext(PasswordContext)
+
+  // const EmailContext = createContext();
+  // const PasswordContext = createContext();
+  // const email = useContext(EmailContext)
+  // const password = useContext(PasswordContext)
+  // const { data, status } = useQuery(['credentials', email, password])
+
+  // if (status === 'loading' || status === 'idle') {
+  //   return <p>Loading...</p>
+  // }
+
+  // if (status === 'error') {
+  //   return <p>Error: {error.message}</p>
+  // }
 
 
+  // useEffect(() => {
+  //   if (data) {
+  //     setIsLoggedIn(true)
+  //   } else {
+  //     setIsLoggedIn(false)
+  //   }
+  // }, [data])
+
+
+
+  // commenting out so i can test out react query 
   // using useNavigate and useLocation to get data
   const navigate = useNavigate();
   const location = useLocation();
-  const [data, setData] = useState(JSON.parse(sessionStorage.getItem('login_data')) || "");
+
+  // const [data, setData] = useState(JSON.parse(sessionStorage.getItem('login_data')) || "");
+  // const [email, setEmail] = useState(data.login_email || "");
+  // const [password, setPassword] = useState(data.login_password || "");
+  // // use effect will run every time the page is rendered so if statement is needed to stop the hook
+  // useEffect(() => {
+  //   if (location.state) {
+  //     if (location.state.hasOwnProperty('login_email') && location.state.hasOwnProperty('login_password')) {
+  //       const { login_email, login_password } = location.state;
+  //       sessionStorage.setItem('login_data', JSON.stringify(location.state));
+  //       // setData(location.state)
+  //       sessionStorage.setItem('login_password', login_password);
+  //       sessionStorage.setItem('login_email', login_email);
+  //       setIsLoggedIn(true)
+
+  //     }
+
+  //     return null
+  //   }
+  // }, [location]);
 
 
-  const [email, setEmail] = useState(data.login_email || "");
-  const [password, setPassword] = useState(data.login_password || "");
 
 
-
-
-  // use effect will run every time the page is rendered so if statement is needed to stop the hook
-  useEffect(() => {
-    if (location.state) {
-      if (location.state.hasOwnProperty('login_email') && location.state.hasOwnProperty('login_password')) {
-        const { login_email, login_password } = location.state;
-        sessionStorage.setItem('login_data', JSON.stringify(location.state));
-        // setData(location.state)
-        sessionStorage.setItem('login_password', login_password);
-        sessionStorage.setItem('login_email', login_email);
-        setIsLoggedIn(true)
-
-      }
-
-      return null
-    }
-  }, [location]);
 
 
   // const login_email = location.state?.login_email ?? 'email not provided';
@@ -47,12 +75,12 @@ function Navbar() {
 
   const handleLoginClick = () => {
     navigate('/login');
-    // setIsLoggedIn(true)
+
 
   }
 
   const handleLogoutClick = () => {
-    sessionStorage.clear()
+    // sessionStorage.clear()
     setIsLoggedIn(false)
 
 
@@ -115,8 +143,11 @@ function Navbar() {
 
           {/* <p>{login_data?.email}</p>
           <p>{login_data?.password}</p> */}
-          <p>{email}</p>
-          <p>{password}</p>
+          {/* <p>{email}</p>
+          <p>{password}</p> */}
+
+          {/* {data && <p>Email: {data.email}</p>}
+          {data && <p>Password: {data.password}</p>} */}
 
 
 
@@ -133,7 +164,7 @@ function Navbar() {
 
     </div>
 
-  );
+  )
 }
 
 
