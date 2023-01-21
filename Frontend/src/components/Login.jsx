@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { Formik } from "formik";
 import { useQuery } from 'react-query'
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -41,28 +42,33 @@ export const LoginForm = () => {
   const [invalidLogin, setInvalidLogin] = useState(null)
   const navigate = useNavigate()
 
+
+  // Call useQuery at the top level of the component
+  // Tried setting a condition here but it better to have the ternary condition that way access is given to the submit form 
+  
   const { data, status, error, refetch } = useQuery(
     ['credentials', formValues?.email, formValues?.password],
     async () => {
-      const response = await axios.get(`http://localhost:3000/userData/getcredentials/${formValues.email}/${formValues.password}`)
-      return response.data
+      const response = await axios.get(`http://localhost:3000/userData/getcredentials/${formValues.email}/${formValues.password}`);
+      return response.data;
     },
     {
       cacheTime: 60 * 60 * 1000, // cache the response for 1 hour
     }
-  )
+  );
+  
 
   const submitForm = async (values, { setSubmitting }) => {
     try {
       setSubmitting(true);
       setFormValues(values);
-      console.log(values)
- 
+      
       if (status === 'loading') return;
       if (status === 'error') throw error;
       if (data) {
-        setEmail(values.email)
-        setPassword(values.password)
+        const token = uuidv4();
+        sessionStorage.setItem('user_token', token);
+        console.log("this is the returned data",data)
         navigate('/nav', { state: { login_email: values.email, login_password: values.password } });
       } else {
         setInvalidLogin('The email or password entered is incorrect');
@@ -79,13 +85,14 @@ export const LoginForm = () => {
 
 
 
+
   return (
 
     <Formik
 
       initialValues={initialValues}
       validate={validate}
-      onSubmit={(values, formik) => submitForm(values, formik, data)}
+      onSubmit={submitForm}
     >
       {(formik) => {
         const {
@@ -177,7 +184,7 @@ export const LoginForm = () => {
               </div>
             </form>
             <div className="text-red-600 text-xs italic">{invalidLogin}</div>
-            {status === 'loading' && <p>Loading...</p>}
+            {/* {status === 'loading' && <p>Loading...</p>} */}
           </div>
 
         );

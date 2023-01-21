@@ -4,14 +4,14 @@ import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from '
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { useQuery } from 'react-query'
-import { EmailContext, PasswordContext } from './../context'
+// import { EmailContext, PasswordContext } from './../context'
 
 
 function Navbar() {
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const email = useContext(EmailContext)
-  const password = useContext(PasswordContext)
+  // const email = useContext(EmailContext)
+  // const password = useContext(PasswordContext)
 
   // const EmailContext = createContext();
   // const PasswordContext = createContext();
