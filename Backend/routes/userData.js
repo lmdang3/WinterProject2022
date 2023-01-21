@@ -1,5 +1,8 @@
 const express = require("express"); 
 const router = express.Router(); 
+const uuid = require('uuid');
+
+
 
 //importing data model schemas
 let { userData } = require("../models/models"); 
@@ -42,7 +45,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 
-//GET based off of credentials
+//GET all data on the user once verified 
 router.get("/getcredentials/:email/:password", (req, res, next) => { 
     userData.find({ account: { email: req.params.email, password :req.params.password}}, 
         (error, data) => {
@@ -57,6 +60,34 @@ router.get("/getcredentials/:email/:password", (req, res, next) => {
         }
 
     ).sort({ 'updatedAt': -1 }).limit(10);
+});
+
+
+//GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
+router.get("/getToken/:email/:password/:webToken", (req, res, next) => { 
+
+    if (!req.params.email || !req.params.password || !req.params.webToken) {
+        console.log("not correct data")
+        return next(new Error('Incorrect Data'));
+    }
+        else {
+    
+    userData.find({ account: { email: req.params.email, password :req.params.password}}, 
+        (error, data) => {
+            if (error) {
+                return next(error);
+            } else {
+                res.json(data[0]);
+                const token = uuid.v4();
+                req.session.token = token;
+                res.json({ token });
+                // console.log(data)
+            }
+        }
+
+    ).sort({ 'updatedAt': -1 }).limit(10);
+}
+
 });
 
 
