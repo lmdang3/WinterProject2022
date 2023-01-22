@@ -79,29 +79,29 @@ router.get("/getcredentials/:email/:password", (req, res, next) => {
 });
 
 
-//GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
-// router.get("/getToken/:token", (req, res, next) => {
-//     try {
-//         // Decode the token and extract the email and password from the payload
-//         const decoded = jwt.verify(req.params.token, secretKey);
-//         const email = decoded.email;
-//         const password = decoded.password
-//         // Use the email and password to query the database
-//         userData.findOne({ email: email, password: password }, (error, data) => {
-//             if (error) {
-//                 return next(error);
-//             } else {
-//                 // const token = uuid.v4();
-//                 // // req.session.token = token;
-//                 // res.json(token);
-//                 res.json(data);
-//                 console.log(data)
-//             }
-//         });
-//     } catch (error) {
-//         res.status(401).json({ message: 'Invalid token' });
-//     }
-// });
+// GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
+router.get("/getToken/:token", (req, res, next) => {
+    try {
+        // Decode the token and extract the email and password from the payload
+        const decoded = jwt.verify(req.params.token, secretKey);
+        const email = decoded.email;
+        const password = decoded.password
+        // Use the email and password to query the database
+        userData.findOne({ email: email, password: password }, (error, data) => {
+            if (error) {
+                return next(error);
+            } else {
+                // const token = uuid.v4();
+                // // req.session.token = token;
+                // res.json(token);
+                res.json(data);
+                console.log(data)
+            }
+        });
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
+});
 
 
 //GET users based off of their phone numbers
