@@ -1,14 +1,15 @@
-const express = require("express"); 
-const router = express.Router(); 
+const express = require("express");
+const router = express.Router();
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
-const secretKey = 'secretKey';
 
+
+const secretKey = 'SecurityKEYexample';
 
 
 //importing data model schemas
-let { userData } = require("../models/models"); 
+let { userData } = require("../models/models");
 
 // let { eventdata } = require("../models/models"); 
 
@@ -18,12 +19,12 @@ const subtractMonths = (date, months) => {
     const result = new Date(date);
     result.setMonth(result.getMonth() - months);
     return result;
-  };
+};
 
 
 //GET all entries
-router.get("/", (req, res, next) => { 
-    userData.find( 
+router.get("/", (req, res, next) => {
+    userData.find(
         (error, data) => {
             if (error) {
                 return next(error);
@@ -36,8 +37,8 @@ router.get("/", (req, res, next) => {
 
 //GET single entry by ID
 router.get("/:id", (req, res, next) => {
-    userData.find( 
-        {_id: req.params.id }, 
+    userData.find(
+        { _id: req.params.id },
         (error, data) => {
             if (error) {
                 return next(error);
@@ -50,16 +51,27 @@ router.get("/:id", (req, res, next) => {
 
 
 //GET all data on the user once verified 
-router.get("/getcredentials/:email/:password", (req, res, next) => { 
-    userData.find({ account: { email: req.params.email, password :req.params.password}}, 
+router.get("/getcredentials/:email/:password", (req, res, next) => {
+    userData.findOne({ account: { email: req.params.email, password: req.params.password } }, // find one turns it into {} oppose to array 
         (error, data) => {
             if (error) {
-                return next(error);
+                return res.status(401).json({ message: 'Invalid email or password' });
             } else {
-                
-                // returns the single object cause we arent gonna have more than one piece of data returned
-                res.json(data[0]);
-                console.log(data)
+
+                // reformatting the payload before encryption
+                const payload = { "email": data.account.email,
+                "phoneNumber": data.phoneNumbers.primaryPhone ,
+                "firstName": data.firstName,
+                "middleName": data.middleName,
+                "lastName": data.lastName};
+                // used in conjunction with json web token
+   
+                const options = { expiresIn: '1d' };
+                const token = jwt.sign(payload, secretKey, options);
+                res.json({ token });
+                // res.json(data);
+                // console.log(data)
+                console.log({ token })
             }
         }
 
@@ -68,31 +80,28 @@ router.get("/getcredentials/:email/:password", (req, res, next) => {
 
 
 //GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
-router.get("/getToken/:email/:password/:webToken", (req, res, next) => { 
-
-    if (!req.params.email || !req.params.password || !req.params.webToken) {
-        console.log("not correct data")
-        return next(new Error('Incorrect Data'));
-    }
-        else {
-    
-    userData.find({ account: { email: req.params.email, password :req.params.password}}, 
-        (error, data) => {
-            if (error) {
-                return next(error);
-            } else {
-                // res.json(data[0]);
-                const token = uuid.v4();
-                // req.session.token = token;
-                res.json(token);
-                // console.log(data)
-            }
-        }
-
-    ).sort({ 'updatedAt': -1 }).limit(10);
-}
-
-});
+// router.get("/getToken/:token", (req, res, next) => {
+//     try {
+//         // Decode the token and extract the email and password from the payload
+//         const decoded = jwt.verify(req.params.token, secretKey);
+//         const email = decoded.email;
+//         const password = decoded.password
+//         // Use the email and password to query the database
+//         userData.findOne({ email: email, password: password }, (error, data) => {
+//             if (error) {
+//                 return next(error);
+//             } else {
+//                 // const token = uuid.v4();
+//                 // // req.session.token = token;
+//                 // res.json(token);
+//                 res.json(data);
+//                 console.log(data)
+//             }
+//         });
+//     } catch (error) {
+//         res.status(401).json({ message: 'Invalid token' });
+//     }
+// });
 
 
 //GET users based off of their phone numbers
@@ -114,15 +123,15 @@ router.get("/getToken/:email/:password/:webToken", (req, res, next) => {
 // });
 
 //POST
-router.post("/", (req, res, next) => { 
-    userData.create( 
+router.post("/", (req, res, next) => {
+    userData.create(
         req.body,
-        (error, data) => { 
+        (error, data) => {
             if (error) {
                 return next(error);
             } else {
                 console.log("data has been added")
-                res.json(data); 
+                res.json(data);
             }
         }
     );
@@ -133,10 +142,10 @@ router.post("/", (req, res, next) => {
 
 // deleting using object id 
 
-router.delete("/:id", (req,res,next)=>{ 
+router.delete("/:id", (req, res, next) => {
     userData.deleteOne(
-        {_id:req.params.id}, 
-        (error,data)=>{
+        { _id: req.params.id },
+        (error, data) => {
             if (error) {
                 return next(error);
             } else {
@@ -148,9 +157,9 @@ router.delete("/:id", (req,res,next)=>{
 });
 
 //PUT update by object id 
-router.put("/:id", (req, res, next) => { 
-    userData.findOneAndUpdate( 
-        { _id: req.params.id }, 
+router.put("/:id", (req, res, next) => {
+    userData.findOneAndUpdate(
+        { _id: req.params.id },
         req.body,
         (error, data) => {
             if (error) {
@@ -158,7 +167,7 @@ router.put("/:id", (req, res, next) => {
             } else {
                 console.log("changes has been added")
                 res.json(data);
-                
+
             }
         }
     );
@@ -182,9 +191,6 @@ router.put("/:id", (req, res, next) => {
 
 
 
-
-
-
 // Lam
 // remove attendee from all event
 // utlizes the update many function and pull all method
@@ -198,14 +204,14 @@ router.put("/:id", (req, res, next) => {
 //                 console.log(error)
 //                 return next(error);
 //             }
-                
+
 //                 else {
 //                     res.json("attendee removed from all events")
 //                     console.log(data)
 
 //                 }
-        
-                  
+
+
 //             });
 //         });
 
@@ -225,27 +231,27 @@ router.put("/:id", (req, res, next) => {
 //             {  $pullAll: {
 //                 attendees: [req.params.id] } 
 
-    
+
 //             },(error,data)=>{
 //                 if (error) {
 
-                    
+
 //                     console.log(error)
 //                     return next(error);
 //                 }
-                    
+
 //                     else {
 //                         res.json("attendee has been removed")
 
-    
+
 //                     }
-            
-                      
+
+
 //                 });
 //             });
 
 
-        
+
 
 
 //GET clients off of their number
@@ -294,17 +300,17 @@ router.put("/:id", (req, res, next) => {
 //         if (error) {
 //             return next(error);
 //         } else {
-        
-            
+
+
 //             // console.log(data);
 //             // lam test 
-           
+
 //             var dict = {}
 
 //             // loops through the obj to grab the values within the objects
 //             // dict drabs the distinct values tied to an event
 //             // the array act as a counter to count the total num of attendees over all
-         
+
 //             for (const i in data) {   
 //                     // count.push(x)
 //                     if (data[i]["attendees"].length === 0) {
@@ -322,7 +328,7 @@ router.put("/:id", (req, res, next) => {
 //                     }
 //               }
 //               res.json(dict);
-            
+
 //         }
 //     }
 // )
@@ -334,32 +340,32 @@ router.put("/:id", (req, res, next) => {
 
 //     eventdata.find({
 //         $and: [
-    
+
 //     {
 //         date: {
 //             $gte: subtractMonths(new Date(), 2),
 //             $lte: new Date()
 //     }},
-    
+
 //        { org_id:process.env.ORG_ID }
-    
+
 //         ]}
 //     ,{eventName:1,attendees:1,date:1,org_id:1},
 //     (error, data) => { 
 //         if (error) {
 //             return next(error);
 //         } else {
-        
-            
+
+
 //             // console.log(data);
 //             // lam test 
-           
+
 //             var list = []
 
 //             // loops through the obj to grab the values within the objects
 //             // dict drabs the distinct values tied to an event
 //             // the array act as a counter to count the total num of attendees over all
-         
+
 //             for (const i in data) {   
 //                 var dict = {}
 //                     // count.push(x)
@@ -367,15 +373,15 @@ router.put("/:id", (req, res, next) => {
 //                         dict["eventName"] = data[i]["eventName"]
 //                         dict["attendees"] = 0
 //                         list.push(dict)
-                        
-                    
+
+
 //                     }
 //                     else {
 //                         dict["eventName"] = data[i]["eventName"]
 //                         dict["attendees"] = data[i]["attendees"].length
 //                         list.push(dict)
 //                     }
-                    
+
 //             // console.log(list)
 //                 }
 
