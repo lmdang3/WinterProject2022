@@ -1,11 +1,15 @@
 const express = require("express"); 
 const router = express.Router(); 
 const uuid = require('uuid');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken');
+const secretKey = 'secretKey';
 
 
 
 //importing data model schemas
 let { userData } = require("../models/models"); 
+
 // let { eventdata } = require("../models/models"); 
 
 // keeping this to deal with dates
@@ -77,10 +81,10 @@ router.get("/getToken/:email/:password/:webToken", (req, res, next) => {
             if (error) {
                 return next(error);
             } else {
-                res.json(data[0]);
+                // res.json(data[0]);
                 const token = uuid.v4();
-                req.session.token = token;
-                res.json({ token });
+                // req.session.token = token;
+                res.json(token);
                 // console.log(data)
             }
         }
