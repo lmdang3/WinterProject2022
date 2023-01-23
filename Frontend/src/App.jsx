@@ -23,8 +23,8 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 const client = new QueryClient()
 
 function App() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // const [email, setEmail] = useState('')
+  // const [password, setPassword] = useState('')
   return (
     <QueryClientProvider client={client}>
       {/* <EmailContext.Provider value={email}>

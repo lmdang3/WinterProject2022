@@ -2,11 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik } from "formik";
-import { useQuery,useMutation } from 'react-query'
+import {useQueryClient, useQuery} from 'react-query'
 import { v4 as uuidv4 } from 'uuid';
 import JWT from 'js-jwt';
+import { QueryCache } from '@tanstack/react-query'
 
-
+const basedURL = "http://localhost:3000"
 
 const initialValues = {
   email: "",
@@ -39,40 +40,47 @@ const validate = (values) => {
 
 export const LoginForm = () => {
 
+  const queryClient = useQueryClient();
+
   const [formValues, setFormValues] = useState();
   const [invalidLogin, setInvalidLogin] = useState(null)
   const navigate = useNavigate()
 
 
+
+
+
+
+
   // Call useQuery at the top level of the component
   // Tried setting a condition here but it better to have the ternary condition that way access is given to the submit form 
 
-  
-
-
-
   const submitForm = async (values, { setSubmitting }) => {
-    
     try {
+      const basedURL = "http://localhost:3000"
       // Encode the user's email and password as the payload
       const payload = { email: values.email, password: values.password };
       const secretKey = 'SecurityKEYexample'
       const token = JWT.encode(payload, secretKey)
+  
       // Send the token in the headers of the axios request
-      axios.get(`http://localhost:3000/userData/getToken/${token}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log(data)
-      // Do something with the returned data
-  } catch (error) {	
+      const { data } = await axios.get(basedURL + `/userData/getToken/${token}`);
+  
+      if (data) {
+        sessionStorage.setItem('token', data);
+        const userData = await axios.get(basedURL + `/userData/userlogin/${data}`);
+        console.log(userData.data)
+        queryClient.setQueryData(['userData'], userData.data);
+        navigate('/');
+      } else {
+        setInvalidLogin("Invalid Login Attempt");
+      }
+    } catch (error) {
       console.error(error);
     } finally {
       setSubmitting(false);
     }
-  };
-
+  }
 
 
 

@@ -4,87 +4,59 @@ import { Link, useLocation, BrowserRouter as Router, Route, useNavigate } from '
 // import { EmailContext, PasswordContext } from '../App.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient} from 'react-query'
+import axios from 'axios'
 // import { EmailContext, PasswordContext } from './../context'
 
 
 function Navbar() {
+  // const queryClient = useQueryClient();
   // setting the state of the user
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  // const email = useContext(EmailContext)
-  // const password = useContext(PasswordContext)
-
-  // const EmailContext = createContext();
-  // const PasswordContext = createContext();
-  // const email = useContext(EmailContext)
-  // const password = useContext(PasswordContext)
-  // const { data, status } = useQuery(['credentials', email, password])
-
-  // if (status === 'loading' || status === 'idle') {
-  //   return <p>Loading...</p>
-  // }
-
-  // if (status === 'error') {
-  //   return <p>Error: {error.message}</p>
-  // }
-
-
+ 
+  const token = sessionStorage.getItem('token');
+  console.log(token)
+  const { data } = useQuery(['userData']);
+  
   // useEffect(() => {
-  //   if (data) {
-  //     setIsLoggedIn(true)
-  //   } else {
-  //     setIsLoggedIn(false)
-  //   }
+  //   console.log(data) // data should be the userData
   // }, [data])
-
+  
+//   const [queryData, queryStatus, queryError, queryFetch] = token ? useQuery(['userData'], async () => {
+//     // Make the axios request using the token
+//     const { data } = await axios.get(import.meta.VITE_ROOT_API + `/userData/${token}`);
+//     return data;
+// }, {
+//     enabled: true,
+//     staleTime: Infinity,
+//     retry: false,
+//     refetchOnMount: false,
+//     refetchOnReconnect: false,
+// }) : [null, 'idle', null, null];
 
 
   // commenting out so i can test out react query 
   // using useNavigate and useLocation to get data
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // const [data, setData] = useState(JSON.parse(sessionStorage.getItem('login_data')) || "");
-  // const [email, setEmail] = useState(data.login_email || "");
-  // const [password, setPassword] = useState(data.login_password || "");
-  // // use effect will run every time the page is rendered so if statement is needed to stop the hook
-  // useEffect(() => {
-  //   if (location.state) {
-  //     if (location.state.hasOwnProperty('login_email') && location.state.hasOwnProperty('login_password')) {
-  //       const { login_email, login_password } = location.state;
-  //       sessionStorage.setItem('login_data', JSON.stringify(location.state));
-  //       // setData(location.state)
-  //       sessionStorage.setItem('login_password', login_password);
-  //       sessionStorage.setItem('login_email', login_email);
-  //       setIsLoggedIn(true)
-
-  //     }
-
-  //     return null
-  //   }
-  // }, [location]);
-
-
-
-
-
 
   // const login_email = location.state?.login_email ?? 'email not provided';
   // const login_password = location.state?.login_password ?? 'password not provided';
 
-
-
   const handleLoginClick = () => {
+    
     navigate('/login');
+    }
 
 
-  }
+  
 
   const handleLogoutClick = () => {
-    // sessionStorage.clear()
+
+
+    sessionStorage.removeItem('token');
+    // queryFetch.invalidate();
     setIsLoggedIn(false)
-
-
     navigate('/');
 
   }
@@ -127,28 +99,8 @@ function Navbar() {
 
           {/* Set it up where if only there is data then the data will appear */}
 
-
-
-          {/* <p>{login_email ? login_email : ''}</p>
-          <p>{login_password ? login_password : ''}</p> */}
-
-          {/* Needa see if the data is in an object called values or can we call the object right away  */}
-          {/* Object is structured based on the state passed this is due to the login passing in two objects called login_email and login_password */}
-
-          {/* <p>{login_data?.login_email}</p>
-          <p>{login_data?.login_password}</p> */}
-
-          {/* <p>{data?.login_email}</p>
-          <p>{data?.login_password}</p> */}
-
-
-          {/* <p>{login_data?.email}</p>
-          <p>{login_data?.password}</p> */}
-          {/* <p>{email}</p>
-          <p>{password}</p> */}
-
-          {/* {data && <p>Email: {data.email}</p>}
-          {data && <p>Password: {data.password}</p>} */}
+          {data ? `Welcome, ${data.firstName}` : 'Welcome'}
+          {/* {data && <p>Welcome {data.firstName}</p>} */}
 
 
 

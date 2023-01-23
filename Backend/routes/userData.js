@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 const secretKey = 'SecurityKEYexample';
+const outKey = "SecureOutput"
 
 
 //importing data model schemas
@@ -79,7 +80,7 @@ router.get("/getcredentials/:email/:password", (req, res, next) => {
 });
 
 
-// GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
+// GET a encrypted payload off of credentials may set up more logic im going to confirm here that there is a token returned 
 router.get("/getToken/:token", (req, res, next) => {
     try {
         // Decode the token and extract the email and password from the payload
@@ -87,15 +88,56 @@ router.get("/getToken/:token", (req, res, next) => {
         const email = decoded.email;
         const password = decoded.password
         // Use the email and password to query the database
-        userData.findOne({ email: email, password: password }, (error, data) => {
+        userData.findOne({ account:{ email: email, password: password }}, (error, data) => {
             if (error) {
                 return next(error);
-            } else {
-                // const token = uuid.v4();
-                // // req.session.token = token;
-                // res.json(token);
-                res.json(data);
-                console.log(data)
+            } else if (data) {
+                // reformatting the payload before encryption
+                const payload = { "email": data.account.email,
+                "phoneNumber": data.phoneNumbers.primaryPhone ,
+                "firstName": data.firstName,
+                "middleName": data.middleName,
+                "lastName": data.lastName};
+                // used in conjunction with json web token
+   
+                const options = { expiresIn: '1d' };
+                const token = jwt.sign(payload, secretKey, options);
+                res.json( token );
+                console.log("success")
+            }
+        });
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
+});
+
+
+// GET a uuid based off of credentials may set up more logic im going to confirm here that there is a token returned 
+router.get("/userlogin/:token", (req, res, next) => {
+    try {
+        // Decode the token and extract the email and password from the payload
+        console.log("this is key",secretKey)
+        const decoded = jwt.verify(req.params.token, secretKey);
+        console.log("this is decoded",decoded)
+        const email = decoded.email;
+        const firstName = decoded.firstName
+        const lastName = decoded.lastName
+        const middleName = decoded.middleName
+        const phoneNumber = decoded.phoneNumber
+        // Use the email and password to query the database
+        userData.findOne({ "account.email": email,firstName:firstName, lastName: lastName,middleName:middleName, "phoneNumbers.primaryPhone":phoneNumber }, (error, data) => {
+            if (error) {
+                return next(error);
+            } else if (data) {
+                // reformatting the payload before encryption
+                const payload = { "email": data.account.email,
+                "phoneNumber": data.phoneNumbers.primaryPhone ,
+                "firstName": data.firstName,
+                "middleName": data.middleName,
+                "lastName": data.lastName};
+                res.json(payload);
+                console.log("this is payload", payload)
+
             }
         });
     } catch (error) {

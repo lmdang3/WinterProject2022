@@ -1,0 +1,9 @@
+
+userData.findOne({ account: { email: "zachary@uh.edu" }, firstName: "Zach", lastName: "Blackwell", middleName: "", phoneNumbers: { primaryPhone:3215407989 } })
+db.userData.findOne({ account: { email: "zachary@uh.edu" }, firstName: "Zach", lastName: "Blackwell", middleName: "", phoneNumbers: { primaryPhone:3215407989 } })
+db.userData.findOne({ account: { email: "zachary@uh.edu" }})
+
+db.userData.findOne({ account: { email: "zachary@uh.edu", password:"zachattack1" }})
+
+
+db.userData.findOne({ "account.email":  "zachary@uh.edu", firstName: "Zach", lastName: "Blackwell", middleName: "", "phoneNumbers.primaryPhone":3215407989 })
