@@ -2,10 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik } from "formik";
-import { useQuery } from 'react-query'
+import {useQueryClient, useQuery} from 'react-query'
 import { v4 as uuidv4 } from 'uuid';
+import JWT from 'js-jwt';
+import { QueryCache } from '@tanstack/react-query'
 
-
+const basedURL = "http://localhost:3000"
 
 const initialValues = {
   email: "",
@@ -38,53 +40,47 @@ const validate = (values) => {
 
 export const LoginForm = () => {
 
+  const queryClient = useQueryClient();
+
   const [formValues, setFormValues] = useState();
   const [invalidLogin, setInvalidLogin] = useState(null)
   const navigate = useNavigate()
 
 
+
+
+
+
+
   // Call useQuery at the top level of the component
   // Tried setting a condition here but it better to have the ternary condition that way access is given to the submit form 
 
-  const { data, status, error, refetch } = useQuery(
-    ['credentials', formValues?.email, formValues?.password],
-    async () => {
-      const response = await axios.get(`http://localhost:3000/userData/getcredentials/${formValues.email}/${formValues.password}`);
-      return response.data;
-    },
-    {
-      cacheTime: 60 * 60 * 1000, // cache the response for 1 hour
-    }
-  );
-
-
   const submitForm = async (values, { setSubmitting }) => {
     try {
-      setSubmitting(true);
-      setFormValues(values);
-
-      if (status === 'loading') return;
-      if (status === 'error') throw error;
+      const basedURL = "http://localhost:3000"
+      // Encode the user's email and password as the payload
+      const payload = { email: values.email, password: values.password };
+      const secretKey = 'SecurityKEYexample'
+      const token = JWT.encode(payload, secretKey)
+  
+      // Send the token in the headers of the axios request
+      const { data } = await axios.get(basedURL + `/userData/getToken/${token}`);
+  
       if (data) {
-        // create user session token 
-        const token = uuidv4();
-        sessionStorage.setItem('token', token);
-        console.log("this is the returned data", data)
-        // Retrieve the token from session storage
-        // const storedToken = sessionStorage.getItem('token');
-        // console.log(storedToken);
-
-        navigate('/nav');
+        sessionStorage.setItem('token', data);
+        const userData = await axios.get(basedURL + `/userData/userlogin/${data}`);
+        console.log(userData.data)
+        queryClient.setQueryData(['userData'], userData.data);
+        navigate('/');
       } else {
-        setInvalidLogin('The email or password entered is incorrect');
+        setInvalidLogin("Invalid Login Attempt");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setSubmitting(false);
     }
-  };
-
+  }
 
 
 
