@@ -28,6 +28,8 @@ https://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occ
 https://www.geeksforgeeks.org/reactjs-usenavigate-hook/     //navigate router 
 https://stackoverflow.com/questions/62861269/attempted-import-error-usehistory-is-not-exported-from-react-router-dom // history outdated router v5
 https://codesandbox.io/s/formik-html-input-fields-and-custom-validation-rules-forked-4d6fzp?file=/src/Form/Form.jsx:2625-2645 // formik used for validations
+https://stackoverflow.com/questions/65565960/remove-query-from-cache-without-refetching-react-query react query how to remove querycilentdata
+https://blog.logrocket.com/understanding-react-useeffect-cleanup-function/ // use effect examples
 
 
 // cool js solutions

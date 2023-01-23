@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import {useQueryClient, useQuery} from 'react-query'
 import { v4 as uuidv4 } from 'uuid';
 import JWT from 'js-jwt';
-import { QueryCache } from '@tanstack/react-query'
+
 
 const basedURL = "http://localhost:3000"
 
@@ -37,23 +37,11 @@ const validate = (values) => {
 };
 
 
-
 export const LoginForm = () => {
 
   const queryClient = useQueryClient();
-
-  const [formValues, setFormValues] = useState();
   const [invalidLogin, setInvalidLogin] = useState(null)
   const navigate = useNavigate()
-
-
-
-
-
-
-
-  // Call useQuery at the top level of the component
-  // Tried setting a condition here but it better to have the ternary condition that way access is given to the submit form 
 
   const submitForm = async (values, { setSubmitting }) => {
     try {
@@ -63,13 +51,14 @@ export const LoginForm = () => {
       const secretKey = 'SecurityKEYexample'
       const token = JWT.encode(payload, secretKey)
   
-      // Send the token in the headers of the axios request
+      // Sends in encrypted data to the server, and the server returns a session token called data
       const { data } = await axios.get(basedURL + `/userData/getToken/${token}`);
-  
+      
+      // checks if the token exists, else no access is granted 
       if (data) {
         sessionStorage.setItem('token', data);
         const userData = await axios.get(basedURL + `/userData/userlogin/${data}`);
-        console.log(userData.data)
+        // console.log(userData.data) returns object of userdata because i needa get into the userData.data to get the specific data
         queryClient.setQueryData(['userData'], userData.data);
         navigate('/');
       } else {
@@ -81,10 +70,6 @@ export const LoginForm = () => {
       setSubmitting(false);
     }
   }
-
-
-
-
 
 
   return (
