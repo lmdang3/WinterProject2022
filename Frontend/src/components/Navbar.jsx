@@ -14,17 +14,20 @@ function Navbar() {
   const queryClient = useQueryClient();
   // setting the state of the user
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
+
   // fetching the session token
   const token = sessionStorage.getItem('token');
   // fetching the data from react query cache
   const { data } = useQuery(['userData']); // is an object of userData
   // checks to see if the data token and data exists before letting the user in
   useEffect(() => {
+    console.log('showAlert', showAlert);
     if (token && data) {
       setIsLoggedIn(true)
     }
-  // sets up having the token and data as a dependency before setting data
-  }, [token,data])
+    // sets up having the token and data as a dependency before setting data
+  }, [token, data], [showAlert])
 
 
   const handleLoginClick = () => {
@@ -34,16 +37,22 @@ function Navbar() {
 
   const handleLogoutClick = () => {
     // sets up the logic when a user logs out the token is cleared and then all the userData is also cleared
+    setShowAlert(true);
     queryClient.removeQueries('userData')
     sessionStorage.removeItem('token');
     setIsLoggedIn(false)
-    // navigate('/');
-    // window.reload()
+  }
+
+  const hideAlert = () => {
+    setShowAlert(false);
   }
 
   // const coolClick = () => {
   //   setIsLoggedIn(prevState => prevState ?  false : true ) 
   // }
+
+
+
 
 
   return (
@@ -91,6 +100,7 @@ function Navbar() {
 
           {/* great example of props  */}
           <LoginButton onClick={() => isLoggedIn ? handleLogoutClick() : handleLoginClick()} text={isLoggedIn ? "Logout" : "Login"} />
+
 
 
         </div>

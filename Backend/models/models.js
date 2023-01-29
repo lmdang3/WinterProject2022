@@ -38,6 +38,10 @@ let userDataSchema = new Schema({
         password: {
             type: String,
             required: true
+        },
+        saltRound: {
+            type: Number,
+            required: true
         }
     },
     

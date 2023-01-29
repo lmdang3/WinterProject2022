@@ -42,7 +42,7 @@ const validate = (values) => {
     }
     if (!values.primaryPhone) {
         errors.primaryPhone = "Primary phone number is required";
-    } 
+    }
     else if (!chkNum.test(values.primaryPhone)) {
         errors.primaryPhone = "Phone numbers must be digits"
     }
@@ -108,15 +108,12 @@ export const RegisterForm = () => {
     const [isError, setIsError] = useState(false);
     const [data, setData] = useState(null);
 
-    const submitForm = (values) => {
+    const submitForm = async (values) => {
         try {
-
-            // where i am at rn the alert will not pass values but data is logged in the console
-            console.log(values)
-            // alert(values.firstName)
-            // console.log(values)
             setLoading(true);
             setIsError(false);
+            // needa set up the confidential password stuff
+            let baseURL = import.meta.env.VITE_ROOT_API
             const data = {
                 firstName: values.firstName,
                 middleName: values.middleName,
@@ -138,13 +135,22 @@ export const RegisterForm = () => {
                     zip: values.zip
                 }
             }
-            console.log("this is the data")
-            console.log(data)
+            const key = import.meta.env.VITE_KEY
+
+            const token = JWT.encode(values.email, key)
+            const { result } = await axios.get(baseURL + `/checkEmail/${token}`);
+            console.log(result)
+
+
+
+
             // grabing the vite env variable
             // POST request using axios inside useEffect React hook
-            let baseURL = import.meta.env.VITE_ROOT_API
-            console.log("something has happened")
-            navigate("/thank",{state: values});
+            // Dont know why but import meta only likes it when you use VITE when calling the variable
+
+            // console.log("testing key")
+
+            navigate("/thank", { state: values });
             // console.log(baseURL)
 
             // axios.post(baseURL + '/userData/', data)
@@ -164,9 +170,9 @@ export const RegisterForm = () => {
         }
         catch (error) {
             console.log(error);
-        } 
-           
-        
+        }
+
+
     }
 
 
