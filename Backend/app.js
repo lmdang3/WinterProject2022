@@ -38,6 +38,11 @@ var Organization_Name = process.env.Organization_Name;
 console.log(Organization_Name)
 
 
+// this works just fine
+// console.log("testing the decrypt key")
+// const decrypted = process.env.Decrypt
+// console.log(decrypted)
+
 
 
 //setup

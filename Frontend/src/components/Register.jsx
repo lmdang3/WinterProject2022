@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Formik, Form, Field } from "formik";
 import cities from "../data/cities";
+import JWT from 'js-jwt';
 // import countries from "../data/countries" not doing no more
 
 
 // const [inputs, setInputs] = useState({}); // goal is to store the user id. object id  // putting outside cause i can alway just set thestate afterwards
 // // used to hold the based url that will be used to look for the user off of their login credentials
-// const baseURL = "http://localhost:3000/userData/getcredentials/"
+
 
 
 
@@ -108,12 +109,13 @@ export const RegisterForm = () => {
     const [isError, setIsError] = useState(false);
     const [data, setData] = useState(null);
 
-    const submitForm = async (values) => {
+    const submitForm = async (values,{ setSubmitting }) => {
         try {
             setLoading(true);
             setIsError(false);
             // needa set up the confidential password stuff
             let baseURL = import.meta.env.VITE_ROOT_API
+            // console.log(typeof baseURL) returns string
             const data = {
                 firstName: values.firstName,
                 middleName: values.middleName,
@@ -138,19 +140,30 @@ export const RegisterForm = () => {
             const key = import.meta.env.VITE_KEY
 
             const token = JWT.encode(values.email, key)
-            const { result } = await axios.get(baseURL + `/checkEmail/${token}`);
-            console.log(result)
+            // console.log(token) token works here
+            
+            // turning it into the backend route
+            const url = baseURL + `/userData/checkEmail/${token}`
+            console.log(url)
 
+            // calling to the database to check whether or not the data already exist
+            const result = await axios.get(url);
 
+            if (result) {
+                console.log(result)
+            }
 
+            else {
+                console.log("no data")
+            }
 
+            
             // grabing the vite env variable
             // POST request using axios inside useEffect React hook
             // Dont know why but import meta only likes it when you use VITE when calling the variable
 
-            // console.log("testing key")
 
-            navigate("/thank", { state: values });
+            // navigate("/thank", { state: values });
             // console.log(baseURL)
 
             // axios.post(baseURL + '/userData/', data)
@@ -171,6 +184,9 @@ export const RegisterForm = () => {
         catch (error) {
             console.log(error);
         }
+    finally {
+        setSubmitting(false);
+      }
 
 
     }
