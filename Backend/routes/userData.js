@@ -52,32 +52,32 @@ router.get("/:id", (req, res, next) => {
 
 
 //GET all data on the user once verified 
-router.get("/getcredentials/:email/:password", (req, res, next) => {
-    userData.findOne({ account: { email: req.params.email, password: req.params.password } }, // find one turns it into {} oppose to array 
-        (error, data) => {
-            if (error) {
-                return res.status(401).json({ message: 'Invalid email or password' });
-            } else {
+// router.get("/getcredentials/:email/:password", (req, res, next) => {
+//     userData.findOne({ account: { email: req.params.email, password: req.params.password } }, // find one turns it into {} oppose to array 
+//         (error, data) => {
+//             if (error) {
+//                 return res.status(401).json({ message: 'Invalid email or password' });
+//             } else {
 
-                // reformatting the payload before encryption
-                const payload = { "email": data.account.email,
-                "phoneNumber": data.phoneNumbers.primaryPhone ,
-                "firstName": data.firstName,
-                "middleName": data.middleName,
-                "lastName": data.lastName};
-                // used in conjunction with json web token
+//                 // reformatting the payload before encryption
+//                 const payload = { "email": data.account.email,
+//                 "phoneNumber": data.phoneNumbers.primaryPhone ,
+//                 "firstName": data.firstName,
+//                 "middleName": data.middleName,
+//                 "lastName": data.lastName};
+//                 // used in conjunction with json web token
    
-                const options = { expiresIn: '1d' };
-                const token = jwt.sign(payload, secretKey, options);
-                res.json({ token });
-                // res.json(data);
-                // console.log(data)
-                console.log({ token })
-            }
-        }
+//                 const options = { expiresIn: '1d' };
+//                 const token = jwt.sign(payload, secretKey, options);
+//                 res.json({ token });
+//                 // res.json(data);
+//                 // console.log(data)
+//                 console.log({ token })
+//             }
+//         }
 
-    ).sort({ 'updatedAt': -1 }).limit(10);
-});
+//     ).sort({ 'updatedAt': -1 }).limit(10);
+// });
 
 
 // GET a encrypted payload off of credentials may set up more logic im going to confirm here that there is a token returned 
@@ -145,24 +145,25 @@ router.get("/userlogin/:token", (req, res, next) => {
     }
 });
 
+//GET data on the user using email returns a yes or no 
+router.get("/checkEmail/:email/", (req, res, next) => {
+    const decrypted = process.env.Decrypt
+    const decoded_email = jwt.verify(req.params.email, decrypted);
+    console.log(decoded_email)
+    userData.findOne({ "account.email": decoded_email} , // should be an single object
+        (error, data) => {
+            if (error) {
+                return res.status(401).json({ message: 'user already exists with the email' });
+            } else {
 
-//GET users based off of their phone numbers
-// http://localhost:3000/primaryData/getnum/8329412894
-// router.get("/getnum/:nums", (req, res, next) => { 
-//     let dbQuery = "";
-//     dbQuery = { phoneNumbers: { "$all" : req.params.nums} } 
-//     // console.log(req.params.nums)
-//     // console.log(dbQuery)
-//     userData.find(dbQuery , 
-//         (error, data) => { 
-//             if (error) {
-//                 return next(error);
-//             } else {
-//                 res.json(data);
-//             }
-//         }
-//     );
-// });
+                res.json("There is data");
+
+            }
+        }
+
+    ).sort({ 'updatedAt': -1 }).limit(10);
+});
+
 
 //POST
 router.post("/", (req, res, next) => {
@@ -173,7 +174,7 @@ router.post("/", (req, res, next) => {
                 return next(error);
             } else {
                 console.log("data has been added")
-                res.json(data);
+                res.json(data);z
             }
         }
     );
@@ -183,7 +184,6 @@ router.post("/", (req, res, next) => {
 });
 
 // deleting using object id 
-
 router.delete("/:id", (req, res, next) => {
     userData.deleteOne(
         { _id: req.params.id },
@@ -216,223 +216,6 @@ router.put("/:id", (req, res, next) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-// Lam to LZT
-// seperating it here cause we dont need any of these other stuff at the moment, make and update more apis as we
-// go further into the project
-
-
-
-
-// Lam
-// remove attendee from all event
-// utlizes the update many function and pull all method
-// router.put("/events/:id", (req,res,next)=>{
-//     userData.updateMany({
-//         $pullAll: {
-//             attendees: [req.params.id]
-
-//         }},(error,data)=>{
-//             if (error) {
-//                 console.log(error)
-//                 return next(error);
-//             }
-
-//                 else {
-//                     res.json("attendee removed from all events")
-//                     console.log(data)
-
-//                 }
-
-
-//             });
-//         });
-
-// Lam 
-// removing an attendee from a specific event
-// gonna reuse code but it should be able to work
-// gotta implement this to api tommorow 
-// takes in two parameters one for the event id and the other for the cilent id afterwards it removes
-// the attendee using the parameters
-
-// router.put("/unattend_event/:eventid/:id", (req, res, next) => { 
-
-//     // console.log(req.query.cilentid)
-//     // console.log(req.query["eventid"])
-//     eventdata.updateOne( 
-//         { _id: req.params.eventid},
-//             {  $pullAll: {
-//                 attendees: [req.params.id] } 
-
-
-//             },(error,data)=>{
-//                 if (error) {
-
-
-//                     console.log(error)
-//                     return next(error);
-//                 }
-
-//                     else {
-//                         res.json("attendee has been removed")
-
-
-//                     }
-
-
-//                 });
-//             });
-
-
-
-
-
-//GET clients off of their number
-// http://localhost:3000/primaryData/getnum/8329412894
-// router.get("/getnum/:nums", (req, res, next) => { 
-//     let dbQuery = "";
-//     dbQuery = { phoneNumbers: { "$all" : req.params.nums} } 
-//     // console.log(req.params.nums)
-//     // console.log(dbQuery)
-//     primarydata.find(dbQuery , 
-//         (error, data) => { 
-//             if (error) {
-//                 return next(error);
-//             } else {
-//                 res.json(data);
-//             }
-//         }
-//     );
-// });
-
-
-// Lam 
-// count of cilents who signed up for events past two months 
-// router.get("/search_attendee_2_months/", (req,res,next)=>{
-
-//     eventdata.find(
-
-//         // taking two condtions must match the org_id as well as the date requirement
-// {
-//     $and: [
-
-// {
-//     date: {
-//         $gte: subtractMonths(new Date(), 2),
-//         $lte: new Date()
-// }},
-
-//    { org_id:process.env.ORG_ID }
-
-//     ]}
-
-
-
-//     ,{eventName:1,attendees:1,date:1,org_id:1},
-//     (error, data) => { 
-//         if (error) {
-//             return next(error);
-//         } else {
-
-
-//             // console.log(data);
-//             // lam test 
-
-//             var dict = {}
-
-//             // loops through the obj to grab the values within the objects
-//             // dict drabs the distinct values tied to an event
-//             // the array act as a counter to count the total num of attendees over all
-
-//             for (const i in data) {   
-//                     // count.push(x)
-//                     if (data[i]["attendees"].length === 0) {
-//                         dict[data[i]["eventName"]] = 0
-//                     }
-//                 for (const [key, value] of Object.entries(data[i]["attendees"])) {
-//                     // console.log(key, value);
-//                     if (dict.hasOwnProperty(data[i]["eventName"]) & data[i]["attendees"].length > 0) {
-//                         dict[data[i]["eventName"]] = dict[data[i]["eventName"]]+1
-//                     }
-
-//                     else if (data[i]["attendees"].length > 0){
-//                         dict[data[i]["eventName"]] = 1
-//                     }
-//                     }
-//               }
-//               res.json(dict);
-
-//         }
-//     }
-// )
-// });
-
-// Lam 
-// count of cilents who signed up for events past two months is formatts it correctly to match the requirements of chart.js
-// router.get("/search_attendee_chart/", (req,res,next)=>{
-
-//     eventdata.find({
-//         $and: [
-
-//     {
-//         date: {
-//             $gte: subtractMonths(new Date(), 2),
-//             $lte: new Date()
-//     }},
-
-//        { org_id:process.env.ORG_ID }
-
-//         ]}
-//     ,{eventName:1,attendees:1,date:1,org_id:1},
-//     (error, data) => { 
-//         if (error) {
-//             return next(error);
-//         } else {
-
-
-//             // console.log(data);
-//             // lam test 
-
-//             var list = []
-
-//             // loops through the obj to grab the values within the objects
-//             // dict drabs the distinct values tied to an event
-//             // the array act as a counter to count the total num of attendees over all
-
-//             for (const i in data) {   
-//                 var dict = {}
-//                     // count.push(x)
-//                     if (data[i]["attendees"].length === 0) {
-//                         dict["eventName"] = data[i]["eventName"]
-//                         dict["attendees"] = 0
-//                         list.push(dict)
-
-
-//                     }
-//                     else {
-//                         dict["eventName"] = data[i]["eventName"]
-//                         dict["attendees"] = data[i]["attendees"].length
-//                         list.push(dict)
-//                     }
-
-//             // console.log(list)
-//                 }
-
-//             res.json(list);
-//             }
-
-//     }
-// )
-// });
 
 
 

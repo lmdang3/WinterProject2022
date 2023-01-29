@@ -45,7 +45,7 @@ function App() {
 
             {/* Take to the login */}
             <Route path="/login" element={<LoginForm />} />
-            {/* Takes to create a new acct */}
+            {/* Takes to create a new acct */}8
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/thank" element={<Thank />} />
             {/* <Route path="test" element={<Test />} />
