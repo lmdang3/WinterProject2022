@@ -172,8 +172,8 @@ router.get("/checkEmail/:token/", (req, res, next) => {
 });
 
 
-//POST
-router.post("/", (req, res, next) => {
+//POST adds the data using a token
+router.post("/:token", (req, res, next) => {
     userData.create(
         req.body,
         (error, data) => {

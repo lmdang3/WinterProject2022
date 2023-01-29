@@ -108,6 +108,7 @@ export const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [data, setData] = useState(null);
+    const [invalidRegistration, setinvalidRegistration] = useState(null)
 
     const submitForm = async (values,{ setSubmitting }) => {
         try {
@@ -150,35 +151,28 @@ export const RegisterForm = () => {
             const result = await axios.get(url);
 
             if (result.data) {
-                console.log(result)
+                setinvalidRegistration("Account already registered with the email provided ")
             }
 
             else {
                 console.log("no data")
-            }
-
-            
-            // grabing the vite env variable
-            // POST request using axios inside useEffect React hook
+ 
             // Dont know why but import meta only likes it when you use VITE when calling the variable
-
-
             // navigate("/thank", { state: values });
-            // console.log(baseURL)
 
-            // axios.post(baseURL + '/userData/', data)
-            //     .then(res => {
-            //         setData(res.data);
-            //         setName('');
-            //         setJob('');
-            //         setLoading(false);
-            //     }).catch(err => {
-            //         console.log(err)
-            //         alert("Soemthing went wrong")
-            //         setLoading(false);2
-            //         setIsError(true);
-            //     });
-
+            axios.post(baseURL + '/userData/', data)
+                .then(res => {
+                    setData(res.data);
+                    setName('');
+                    setJob('');
+                    setLoading(false);
+                }).catch(err => {
+                    console.log(err)
+                    alert("Soemthing went wrong")
+                    setLoading(false);2
+                    setIsError(true);
+                });
+            }
 
         }
         catch (error) {
@@ -501,8 +495,10 @@ export const RegisterForm = () => {
 
 
                         </div>
+                        <div className="text-red-600 text-xs italic">{invalidRegistration}</div>
 
                     </Form>
+                    
                 );
             }}
 
