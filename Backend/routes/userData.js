@@ -157,12 +157,13 @@ router.get("/checkEmail/:token/", (req, res, next) => {
     userData.findOne({ "account.email": req.params.email} , // should be an single object
         (error, data) => {
             if (error) {
-                console.log(data)
+                
                 return res.status(401).json({ message: 'user already exists with the email' });
                
             } else {
 
-                res.json("There is data");
+                console.log(data);
+                res.json(data);
 
             }
         }
