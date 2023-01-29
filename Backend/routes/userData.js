@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'SecurityKEYexample';
 const outKey = "SecureOutput"
 
+// checking to see if this method is better
+
 
 //importing data model schemas
 let { userData } = require("../models/models");
@@ -146,14 +148,18 @@ router.get("/userlogin/:token", (req, res, next) => {
 });
 
 //GET data on the user using email returns a yes or no 
-router.get("/checkEmail/:email/", (req, res, next) => {
+router.get("/checkEmail/:token/", (req, res, next) => {
+   
     const decrypted = process.env.Decrypt
-    const decoded_email = jwt.verify(req.params.email, decrypted);
-    console.log(decoded_email)
-    userData.findOne({ "account.email": decoded_email} , // should be an single object
+    console.log("this is the env",decrypted)
+    const decoded_email = jwt.verify(req.params.token, decrypted);
+    console.log("this is decoded",decoded_email)
+    userData.findOne({ "account.email": req.params.email} , // should be an single object
         (error, data) => {
             if (error) {
+                console.log(data)
                 return res.status(401).json({ message: 'user already exists with the email' });
+               
             } else {
 
                 res.json("There is data");
