@@ -149,7 +149,7 @@ export const RegisterForm = () => {
             // calling to the database to check whether or not the data already exist
             const result = await axios.get(url);
 
-            if (result) {
+            if (result.data) {
                 console.log(result)
             }
 
