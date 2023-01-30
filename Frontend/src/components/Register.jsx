@@ -160,7 +160,9 @@ export const RegisterForm = () => {
             // Dont know why but import meta only likes it when you use VITE when calling the variable
             // navigate("/thank", { state: values });
 
-            axios.post(baseURL + '/userData/', data)
+            const payload = JWT.encode(data, key)
+
+            axios.post(baseURL + '/userData/', payload)
                 .then(res => {
                     setData(res.data);
                     setName('');
