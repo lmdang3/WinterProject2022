@@ -173,9 +173,23 @@ router.get("/checkEmail/:token/", (req, res, next) => {
 
 
 //POST adds the data using a token
-router.post("/:token", (req, res, next) => {
+router.post("/", (req, res, next) => {
+
+    const hashPass = null
+    let payload = {
+        firstName: req.body.firstName,
+        middleName: req.body.middleName,
+        LastName: req.body.LastName,
+        account:{
+            email: req.body.email,
+            // needs to be hashed havent done yet
+            password: hashPass
+        }
+
+    }
+  
     userData.create(
-        req.body,
+        payload,
         (error, data) => {
             if (error) {
                 return next(error);
