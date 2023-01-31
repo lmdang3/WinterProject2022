@@ -39,7 +39,7 @@ let userDataSchema = new Schema({
             type: String,
             required: true
         },
-        saltRound: {
+        saltRounds: {
             type: Number,
             required: true
         }

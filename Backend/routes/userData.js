@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // const uuid = require('uuid');
-// const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
 
@@ -175,33 +175,51 @@ router.get("/checkEmail/:token/", (req, res, next) => {
 //POST adds the data using a token
 router.post("/", (req, res, next) => {
 
-    const hashPass = null
-    let payload = {
-        firstName: req.body.firstName,
-        middleName: req.body.middleName,
-        LastName: req.body.LastName,
-        account:{
-            email: req.body.email,
-            // needs to be hashed havent done yet
-            password: hashPass
-        }
+    const password =  req.body.password
+    const saltRounds = Math.floor(Math.random() * (15 - 5 + 1) + 5);
 
-    }
-  
-    userData.create(
-        payload,
-        (error, data) => {
-            if (error) {
-                return next(error);
-            } else {
-                console.log("data has been added")
-                res.json(data);z
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hashedPassword) {
+            // Store the salt and the hashed password in the database
+            let payload = {
+                firstName: req.body.firstName,
+                middleName: req.body.middleName,
+                LastName: req.body.LastName,
+                account:{
+                    email: req.body.email,
+                    // needs to be hashed havent done yet
+                    "password": password,
+                    
+
+                },
+                address:{
+                    line1: req.body.line1,
+                    line2: req.body.line2,
+                    city: req.body.city,
+                    state: req.body.state,
+                    country: req.body.country,
+                    zip: req.body.zip
+                }
+        
             }
-        }
-    );
-    userData.createdAt;
-    userData.updatedAt;
-    userData.createdAt instanceof Date;
+          
+            userData.create(
+                payload,
+                (error, data) => {
+                    if (error) {
+                        return next(error);
+                    } else {
+                        console.log("data has been added")
+                        res.json(data);z
+                    }
+                }
+            );
+            userData.createdAt;
+            userData.updatedAt;
+            userData.createdAt instanceof Date;
+        });
+    });
+    
 });
 
 // deleting using object id 
