@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-// const uuid = require('uuid');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
-
+// usually this should not be done
 const secretKey = 'SecurityKEYexample';
 const outKey = "SecureOutput"
 
-// checking to see if this method is better
+// Thought call the env here but it does not allow for it 
+
 
 
 //importing data model schemas
@@ -53,7 +53,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 
-//GET all data on the user once verified 
+//GET all data on the user once verified
 // router.get("/getcredentials/:email/:password", (req, res, next) => {
 //     userData.findOne({ account: { email: req.params.email, password: req.params.password } }, // find one turns it into {} oppose to array 
 //         (error, data) => {
@@ -68,7 +68,7 @@ router.get("/:id", (req, res, next) => {
 //                 "middleName": data.middleName,
 //                 "lastName": data.lastName};
 //                 // used in conjunction with json web token
-   
+
 //                 const options = { expiresIn: '1d' };
 //                 const token = jwt.sign(payload, secretKey, options);
 //                 res.json({ token });
@@ -90,21 +90,23 @@ router.get("/getToken/:token", (req, res, next) => {
         const email = decoded.email;
         const password = decoded.password
         // Use the email and password to query the database
-        userData.findOne({ account:{ email: email, password: password }}, (error, data) => {
+        userData.findOne({ account: { email: email, password: password } }, (error, data) => {
             if (error) {
                 return next(error);
             } else if (data) {
                 // reformatting the payload before encryption
-                const payload = { "email": data.account.email,
-                "phoneNumber": data.phoneNumbers.primaryPhone ,
-                "firstName": data.firstName,
-                "middleName": data.middleName,
-                "lastName": data.lastName};
+                const payload = {
+                    "email": data.account.email,
+                    "phoneNumber": data.phoneNumbers.primaryPhone,
+                    "firstName": data.firstName,
+                    "middleName": data.middleName,
+                    "lastName": data.lastName
+                };
                 // used in conjunction with json web token
-   
+
                 const options = { expiresIn: '1d' };
                 const token = jwt.sign(payload, secretKey, options);
-                res.json( token );
+                res.json(token);
                 console.log("success")
             }
         });
@@ -118,25 +120,27 @@ router.get("/getToken/:token", (req, res, next) => {
 router.get("/userlogin/:token", (req, res, next) => {
     try {
         // Decode the token and extract the email and password from the payload
-        console.log("this is key",secretKey)
+        console.log("this is key", secretKey)
         const decoded = jwt.verify(req.params.token, secretKey);
-        console.log("this is decoded",decoded)
+        console.log("this is decoded", decoded)
         const email = decoded.email;
         const firstName = decoded.firstName
         const lastName = decoded.lastName
         const middleName = decoded.middleName
         const phoneNumber = decoded.phoneNumber
         // Use the email and password to query the database
-        userData.findOne({ "account.email": email,firstName:firstName, lastName: lastName,middleName:middleName, "phoneNumbers.primaryPhone":phoneNumber }, (error, data) => {
+        userData.findOne({ "account.email": email, firstName: firstName, lastName: lastName, middleName: middleName, "phoneNumbers.primaryPhone": phoneNumber }, (error, data) => {
             if (error) {
                 return next(error);
             } else if (data) {
                 // reformatting the payload before encryption
-                const payload = { "email": data.account.email,
-                "phoneNumber": data.phoneNumbers.primaryPhone ,
-                "firstName": data.firstName,
-                "middleName": data.middleName,
-                "lastName": data.lastName};
+                const payload = {
+                    "email": data.account.email,
+                    "phoneNumber": data.phoneNumbers.primaryPhone,
+                    "firstName": data.firstName,
+                    "middleName": data.middleName,
+                    "lastName": data.lastName
+                };
                 res.json(payload);
                 console.log("this is payload", payload)
 
@@ -149,17 +153,17 @@ router.get("/userlogin/:token", (req, res, next) => {
 
 //GET data on the user using email returns a yes or no 
 router.get("/checkEmail/:token/", (req, res, next) => {
-   
+
     const decrypted = process.env.Decrypt
-    console.log("this is the env",decrypted)
+    console.log("this is the env", decrypted)
     const decoded_email = jwt.verify(req.params.token, decrypted);
-    console.log("this is decoded",decoded_email)
-    userData.findOne({ "account.email": req.params.email} , // should be an single object
+    console.log("this is decoded", decoded_email)
+    userData.findOne({ "account.email": req.params.email }, // should be an single object
         (error, data) => {
             if (error) {
-                
+
                 return res.status(401).json({ message: 'user already exists with the email' });
-               
+
             } else {
 
                 console.log(data);
@@ -175,42 +179,56 @@ router.get("/checkEmail/:token/", (req, res, next) => {
 //POST adds the data using a token
 router.post("/", (req, res, next) => {
 
-    const password =  req.body.password
+    const decrypted = process.env.Decrypt
+    console.log("this is the data")
+    const decoded_payload = jwt.verify(req.body.payload, decrypted);
+    console.log(decoded_payload)
+    console.log("this is the password")
+    const password = decoded_payload.account.password
+    console.log(password)
+    console.log("this is the new payload")
+    //hashes the data between 10-15
     const saltRounds = Math.floor(Math.random() * (15 - 5 + 1) + 5);
 
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-        bcrypt.hash(password, salt, function(err, hashedPassword) {
+    // this is where i am using the bcrypt libary to then hash my data before storing
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(password, salt, function (err, hashedPassword) {
             // Store the salt and the hashed password in the database
-            let payload = {
-                firstName: req.body.firstName,
-                middleName: req.body.middleName,
-                LastName: req.body.LastName,
-                account:{
-                    email: req.body.email,
+            const newPayload = {
+                firstName: decoded_payload.firstName,
+                middleName: decoded_payload.middleName,
+                lastName: decoded_payload.lastName,
+                account: {
+                    email: decoded_payload.account.email,
                     // needs to be hashed havent done yet
-                    "password": password,
-                    
-
+                    "password": hashedPassword,
+                    "saltRounds": saltRounds
                 },
-                address:{
-                    line1: req.body.line1,
-                    line2: req.body.line2,
-                    city: req.body.city,
-                    state: req.body.state,
-                    country: req.body.country,
-                    zip: req.body.zip
+                phoneNumbers: {
+                    primaryPhone: decoded_payload.phoneNumbers.primaryPhone,
+                    secondaryPhone: decoded_payload.phoneNumbers.secondaryPhone
+                },
+                address: {
+                    line1: decoded_payload.address.line1,
+                    line2: decoded_payload.address.line2,
+                    city: decoded_payload.address.city,
+                    state: decoded_payload.address.state,
+                    country: decoded_payload.address.country,
+                    zip: decoded_payload.address.zip
                 }
-        
+
             }
-          
+
+            console.log(newPayload)
+
             userData.create(
-                payload,
+                newPayload,
                 (error, data) => {
                     if (error) {
                         return next(error);
                     } else {
                         console.log("data has been added")
-                        res.json(data);z
+                        res.json(data);
                     }
                 }
             );
@@ -219,7 +237,7 @@ router.post("/", (req, res, next) => {
             userData.createdAt instanceof Date;
         });
     });
-    
+
 });
 
 // deleting using object id 
