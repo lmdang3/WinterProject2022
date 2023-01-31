@@ -1,0 +1,30 @@
+// bcrypt how to hash pass 
+
+// const bcrypt = require('bcrypt');
+
+// const password = "mypassword";
+// const saltRounds = 10;
+
+// bcrypt.hash(password, saltRounds, function(err, hash) {
+//     // Store hash in your password DB.
+// });
+
+
+
+
+
+
+
+// // checking the login
+// const bcrypt = require('bcrypt');
+
+// const password = "mypassword";
+// const hash = "the_hash_stored_in_db";
+
+// bcrypt.compare(password, hash, function(err, res) {
+//     if(res) {
+//         console.log("Password is valid");
+//     } else {
+//         console.log("Password is invalid");
+//     }
+// });

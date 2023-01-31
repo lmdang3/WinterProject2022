@@ -122,8 +122,8 @@ export const RegisterForm = () => {
                 middleName: values.middleName,
                 lastName: values.lastName,
                 phoneNumbers: {
-                    primaryPhone: values.primaryPhone,
-                    secondaryPhone: values.secondaryPhone
+                    primaryPhone: Number(values.primaryPhone),
+                    secondaryPhone: Number(values.secondaryPhone)
                 },
                 account: {
                     email: values.email,
@@ -135,9 +135,10 @@ export const RegisterForm = () => {
                     city: values.city,
                     state: values.state,
                     country: values.country,
-                    zip: values.zip
+                    zip: Number(values.zip)
                 }
             }
+            // This gets the secret key
             const key = import.meta.env.VITE_KEY
 
             const token = JWT.encode(values.email, key)
@@ -161,13 +162,15 @@ export const RegisterForm = () => {
             // navigate("/thank", { state: values });
 
             const payload = JWT.encode(data, key)
+            console.log("this is payload",payload)
+            // needa put it into a body because axios requires data to be in this format
+            let body = {payload}
 
-            axios.post(baseURL + '/userData/', payload)
+            await axios.post(baseURL + '/userData/', body)
                 .then(res => {
-                    setData(res.data);
-                    setName('');
-                    setJob('');
+                    let registerData = res.data
                     setLoading(false);
+                    console.log(registerData)
                 }).catch(err => {
                     console.log(err)
                     alert("Soemthing went wrong")
@@ -183,11 +186,7 @@ export const RegisterForm = () => {
     finally {
         setSubmitting(false);
       }
-
-
     }
-
-
     return (
 
         <Formik
