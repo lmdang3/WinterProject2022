@@ -53,8 +53,6 @@ const validate = (values) => {
     else if (values.primaryPhone.length < 10) {
         errors.primaryPhone = "Phone number has too little digits"
     }
-
-
     if (!values.email) {
         errors.email = "Email is required   ";
     } else if (!regex.test(values.email)) {
@@ -67,7 +65,13 @@ const validate = (values) => {
         errors.password = "Password too short";
     }
     else if (!/\d/.test(values.password)) {
-        errors.password = 'Password must include at least one number  ';
+        errors.password = 'Password must include at least one number';
+    }
+    else if (!/[a-z]/.test(values.password)){
+        errors.password = "Password must include an lowercase letter"
+    }
+    else if (!/[A-Z]/.test(values.password)){
+        errors.password = "Password must include an uppercase letter"
     }
     if (!values.line1) {
         errors.line1 = "Street address is required";
